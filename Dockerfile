@@ -14,7 +14,7 @@ RUN npm install
 RUN quasar build -m pwa
 
 # Usamos una imagen de Apache para servir los archivos estáticos de Quasar
-FROM httpd:2.4 AS production-stage
+FROM httpd AS production-stage
 
 # Copiamos los archivos compilados desde la etapa anterior al directorio de Apache
 COPY --from=build-stage /app/dist/spa/ /usr/local/apache2/htdocs/
