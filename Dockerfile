@@ -1,28 +1,35 @@
-# Usamos una imagen base de Node.js para compilar Quasar
-FROM node:20 AS build-stage
+# Etapa 1: Instalación de las dependencias y construcción de la aplicación Quasar
+FROM node:18-alpine AS build-stage
 
-# Establecemos el directorio de trabajo
+# Establece el directorio de trabajo
 WORKDIR /app
 
-# Copiamos los archivos de la aplicación Quasar
+# Copia los archivos de configuración y el package.json
 COPY package*.json ./
+
+# Instala las dependencias
+RUN npm install
+
+# Instala la CLI de Quasar globalmente
+RUN npm install -g quasar
+
+# Copia el resto de la aplicación
 COPY . .
 
-# Instalamos las dependencias y compilamos la aplicación para producción
-RUN npm install -g @quasar/cli
-RUN npm install
+# Construye la aplicación
 RUN quasar build -m pwa
 
-# Usamos una imagen de Apache para servir los archivos estáticos de Quasar
-FROM httpd AS production-stage
+# Etapa 2: Servir la aplicación con Nginx
+FROM nginx:alpine
 
-# Copiamos los archivos compilados desde la etapa anterior al directorio de Apache
-COPY --from=build-stage /app/dist/pwa/ /usr/local/apache2/htdocs/
+# Copia los archivos de salida de la construcción a la carpeta de Nginx
+COPY --from=build-stage /app/dist/pwa /usr/share/nginx/html
 
-# Configuramos Apache con un archivo custom si es necesario
-COPY ./httpd.conf /usr/local/apache2/conf/httpd.conf
+# Copia el archivo de configuración de Nginx
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-# Exponemos el puerto 80 para servir la aplicación
+# Exponer el puerto 80
 EXPOSE 80
 
-CMD ["httpd-foreground"]
+# Comando por defecto para iniciar Nginx
+CMD ["nginx", "-g", "daemon off;"]
