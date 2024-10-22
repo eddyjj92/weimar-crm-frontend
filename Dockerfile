@@ -11,13 +11,13 @@ COPY . .
 # Instalamos las dependencias y compilamos la aplicación para producción
 RUN npm install -g @quasar/cli
 RUN npm install
-RUN quasar build
+RUN quasar build -m pwa
 
 # Usamos una imagen de Apache para servir los archivos estáticos de Quasar
 FROM httpd:2.4 AS production-stage
 
 # Copiamos los archivos compilados desde la etapa anterior al directorio de Apache
-COPY --from=build-stage /app/public/dist/spa/ /usr/local/apache2/htdocs/
+COPY --from=build-stage /app/dist/spa/ /usr/local/apache2/htdocs/
 
 # Exponemos el puerto 80 para servir la aplicación
 EXPOSE 80

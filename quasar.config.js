@@ -61,7 +61,7 @@ export default configure((ctx) => {
       // ignorePublicFolder: true,
       // minify: false,
       // polyfillModulePreload: true,
-      distDir: '../public/dist',
+      //distDir,
 
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
