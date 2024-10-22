@@ -11,7 +11,7 @@ import axios from 'axios'
 let server = 'http://localhost:8000';
 const host = window.location.host
 if (host !== 'localhost:9000' && host !== 'localhost:9200'){
-  server = `https://weimar-api.koyeb.app`;
+  server = `http://2.58.80.90:8000`;
 }
 const api = axios.create({ baseURL: server })
 
