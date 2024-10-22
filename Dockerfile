@@ -1,5 +1,5 @@
 # Etapa 1: Instalación de las dependencias y construcción de la aplicación Quasar
-FROM node:18-alpine AS build-stage
+FROM node:20-alpine AS build-stage
 
 # Establece el directorio de trabajo
 WORKDIR /app
