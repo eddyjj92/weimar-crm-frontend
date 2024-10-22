@@ -19,10 +19,10 @@ FROM httpd AS production-stage
 # Copiamos los archivos compilados desde la etapa anterior al directorio de Apache
 COPY --from=build-stage /app/dist/pwa/ /usr/local/apache2/htdocs/
 
-# Exponemos el puerto 80 para servir la aplicación
-EXPOSE 80
-
 # Configuramos Apache con un archivo custom si es necesario
 COPY ./httpd.conf /usr/local/apache2/conf/httpd.conf
+
+# Exponemos el puerto 80 para servir la aplicación
+EXPOSE 80
 
 CMD ["httpd-foreground"]
