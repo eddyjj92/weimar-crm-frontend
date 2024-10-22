@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN npm install
 
 # Instala la CLI de Quasar globalmente
-RUN npm install -g quasar
+RUN npm install -g @quasar/cli
 
 # Copia el resto de la aplicación
 COPY . .
