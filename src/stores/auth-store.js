@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const authUser = async (user) => {
     await Loading.show();
-    return await api.post("/api/auth", user)
+    return await api.post("/api/login", user)
       .then(res => {
         user.value = res.data.user;
         token.value = res.data.token;
