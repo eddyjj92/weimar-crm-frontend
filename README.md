@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Weimar CRM (weimar-crm-frontend)
 
 Weimar CRM
@@ -39,3 +40,7 @@ quasar build
 
 ### Customize the configuration
 See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+=======
+# weimar-crm-frontend
+weimar-crm-frontend
+>>>>>>> 3dae10e1784a10a36b4b84c16dd02b2a3f363270
