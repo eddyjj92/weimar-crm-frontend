@@ -277,6 +277,10 @@ onMounted(() => {
   if (!storeStore.fetched){
     storeStore.getStores(token.value);
   }
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.style.display = 'none'; // Oculta el preloader
+  }
 })
 
 const removeNavigationItem = (page_name) => {

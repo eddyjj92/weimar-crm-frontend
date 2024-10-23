@@ -106,6 +106,10 @@ const login = async () => {
 }
 
 onMounted(() => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.style.display = 'none'; // Oculta el preloader
+  }
   setTimeout(() => {
     particlesJS("particles-js", {
       "particles": {
