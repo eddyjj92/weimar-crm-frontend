@@ -3,24 +3,24 @@ import {ref} from "vue";
 import {api} from "boot/axios";
 import {Loading, Notify} from "quasar";
 
-export const useEntityStore = defineStore('store', () => {
-  let stores = ref([]);
+export const useEntityStore = defineStore('entity', () => {
+  let entities = ref([]);
   let fetched = ref(false);
   (function construct(){
-    stores.value = JSON.parse(localStorage.getItem('stores') ?? '[]');
+    entities.value = JSON.parse(localStorage.getItem('entities') ?? '[]');
   })();
 
-  const getStores = async (token, filters = null, loading = true, hideLoading = true) => {
+  const getEntities = async (token, filters = null, loading = true, hideLoading = true) => {
     loading ? await Loading.show() : null;
-    return await api.get(`${filters ?? '/api/stores'}`, {
+    return await api.get(`${filters ?? '/api/entities'}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
       .then(res => {
         fetched.value = true;
-        stores.value = res.data.stores;
-        localStorage.setItem("stores", JSON.stringify(stores.value))
+        entities.value = res.data.entities;
+        localStorage.setItem("entities", JSON.stringify(entities.value))
         return true
       })
       .catch(error => {
@@ -40,9 +40,9 @@ export const useEntityStore = defineStore('store', () => {
       .finally(() => hideLoading ? Loading.hide() : null)
   }
 
-  const postStore = async (token, store) => {
+  const postEntity = async (token, entity) => {
     await Loading.show();
-    return await api.post(`/api/stores`, store,{
+    return await api.post(`/api/entities`, entity,{
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -81,9 +81,9 @@ export const useEntityStore = defineStore('store', () => {
       .finally(() => Loading.hide())
   }
 
-  const putStore = async (token, id, store) => {
+  const putEntity = async (token, id, entity) => {
     await Loading.show();
-    return await api.put(`/api/stores/${id}`, store,{
+    return await api.put(`/api/entities/${id}`, entity,{
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -128,9 +128,9 @@ export const useEntityStore = defineStore('store', () => {
       .finally(() => Loading.hide())
   }
 
-  const deleteStore = async (token, id) => {
+  const deleteEntity = async (token, id) => {
     await Loading.show();
-    return await api.delete(`/api/stores/${id}`,{
+    return await api.delete(`/api/entities/${id}`,{
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -165,11 +165,11 @@ export const useEntityStore = defineStore('store', () => {
   }
 
   return {
-    stores,
+    entities,
     fetched,
-    getStores,
-    postStore,
-    putStore,
-    deleteStore
+    getEntities,
+    postEntity,
+    putEntity,
+    deleteEntity
   }
 });
