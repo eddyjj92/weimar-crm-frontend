@@ -198,7 +198,7 @@ watch(selected, () => {
 })
 
 onMounted(async () => {
-  await storeStore.getStores(token.value, null)
+  await storeStore.getStores(token.value, null, !storeStore.fetched)
 })
 
 function wrapCsvValue(val, formatFn) {

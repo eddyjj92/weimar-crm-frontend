@@ -6,6 +6,7 @@ import {Loading, Notify} from "quasar";
 export const useRoleStore = defineStore('role', () => {
   let roles = ref([]);
   let permissions = ref([]);
+  let fetched = ref(false);
   (function construct(){
     roles.value = JSON.parse(localStorage.getItem('roles') ?? '[]');
     permissions.value = JSON.parse(localStorage.getItem('permissions') ?? '[]');
@@ -19,6 +20,7 @@ export const useRoleStore = defineStore('role', () => {
       }
     })
       .then(res => {
+        fetched.value = true;
         roles.value = res.data.roles;
         localStorage.setItem("roles", JSON.stringify(roles.value))
         return true
@@ -207,6 +209,7 @@ export const useRoleStore = defineStore('role', () => {
   return {
     roles,
     permissions,
+    fetched,
     getRoles,
     getPermissions,
     postRole,

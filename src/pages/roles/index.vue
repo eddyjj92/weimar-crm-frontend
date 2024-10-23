@@ -232,7 +232,7 @@ watch(selected, () => {
 })
 
 onMounted(async () => {
-  await roleStore.getRoles(token.value, null)
+  await roleStore.getRoles(token.value, null, !roleStore.fetched)
   await roleStore.getPermissions(token.value, null, false)
 })
 
