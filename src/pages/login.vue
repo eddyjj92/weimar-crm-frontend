@@ -101,7 +101,7 @@ let user = reactive({
 const login = async () => {
   const authenticated = await authStore.authUser(user)
   if (authenticated){
-    await router.push({ path: '/dashboard' })
+    window.location.href = '/dashboard';
   }
 }
 
