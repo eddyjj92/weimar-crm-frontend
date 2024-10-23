@@ -46,5 +46,14 @@ export default route(function (/* { store, ssrContext } */) {
     }
   });
 
+  // Guardia de navegación
+  Router.beforeEach(async (to, from, next) => {
+    if (to.path === '/') {
+      const MainLayout = () => import('layouts/MainLayout.vue');
+      await MainLayout(); // Carga anticipada
+    }
+    next();
+  });
+
   return Router
 })
