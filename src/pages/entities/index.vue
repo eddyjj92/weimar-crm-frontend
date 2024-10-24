@@ -115,7 +115,7 @@
       </q-table>
     </q-card>
     <q-dialog v-model="dialog" persistent @before-hide="selected = []; store = {}">
-      <q-card style="width: 600px; max-width: 80vw;">
+      <q-card style="width: 650px; max-width: 80vw;">
         <q-card-section>
           <div class="text-h6">
             <span v-if="selected.length === 0"> Registrar Entidad</span>
@@ -136,11 +136,47 @@
                   <q-item-label class="q-pb-xs">Tipo de Identificación</q-item-label>
                   <q-select dense outlined v-model="entity.identification_type" :options="id_types" label="Tipo de Identificación"/>
                 </q-item-section>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Identificación</q-item-label>
+                  <q-input dense outlined v-model="entity.identification" label="Identificación"/>
+                </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Nombre</q-item-label>
                   <q-input dense outlined v-model="entity.name" label="Nombre"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Apellidos</q-item-label>
+                  <q-input dense outlined v-model="entity.lastnames" label="Apellidos"/>
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Nombre Comercial</q-item-label>
+                  <q-input dense outlined v-model="entity.trade_name" label="Nombre Comercial"/>
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Fecha de Nacimiento</q-item-label>
+                  <q-input outlined dense v-model="entity.birthdate" mask="##/##/####" readonly>
+                    <template v-slot:append>
+                      <q-icon name="event" class="cursor-pointer">
+                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                          <q-date v-model="entity.birthdate" mask="DD/MM/YYYY">
+                            <div class="row items-center justify-end">
+                              <q-btn v-close-popup label="Close" color="primary" flat />
+                            </div>
+                          </q-date>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Dirección</q-item-label>
+                  <q-input dense outlined v-model="entity.lastnames" label="Dirección"/>
                 </q-item-section>
               </q-item>
             </q-list>
