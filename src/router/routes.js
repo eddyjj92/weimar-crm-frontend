@@ -1,8 +1,10 @@
+import MainLayout from "layouts/MainLayout.vue";
+
 const routes = [
   { path: '/', component: () => import('pages/login.vue') },
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: MainLayout,
     meta: {requiresAuth: true},
     children: [
       { path: '/dashboard', component: () => import('pages/dashboard.vue'), },
