@@ -220,6 +220,24 @@
                 </q-item-section>
               </q-item>
 
+              <q-item
+                v-if="user?.roles[0].permissions.find(p => p.name === 'listar entidades')"
+                active-class="tab-active"
+                @click="storePageDetails('Entidades', 'entities', 'store')"
+                to="/stores"
+                class="q-ma-sm navigation-item"
+                clickable
+                v-ripple
+              >
+                <q-item-section avatar>
+                  <q-icon name="store"/>
+                </q-item-section>
+
+                <q-item-section>
+                  Tiendas
+                </q-item-section>
+              </q-item>
+
             </q-list>
           </q-scroll-area>
         </div>
