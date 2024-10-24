@@ -223,18 +223,18 @@
               <q-item
                 v-if="user?.roles[0].permissions.find(p => p.name === 'listar entidades')"
                 active-class="tab-active"
-                @click="storePageDetails('Entidades', 'entities', 'store')"
-                to="/stores"
+                @click="storePageDetails('Entidades', 'entities', 'hail')"
+                to="/entities"
                 class="q-ma-sm navigation-item"
                 clickable
                 v-ripple
               >
                 <q-item-section avatar>
-                  <q-icon name="store"/>
+                  <q-icon name="hail"/>
                 </q-item-section>
 
                 <q-item-section>
-                  Tiendas
+                  Entidades
                 </q-item-section>
               </q-item>
 

@@ -130,7 +130,7 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Nombre</q-item-label>
-                  <q-input dense outlined v-model="store.name" label="Nombre"/>
+                  <q-input dense outlined v-model="entity.name" label="Nombre"/>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -160,7 +160,7 @@ const $q = useQuasar();
 const authStore = useAuthStore();
 const {token, user} = storeToRefs(authStore);
 const entityStore = useEntityStore();
-const {entities} = storeToRefs(entitiestore);
+const {entities} = storeToRefs(entityStore);
 let loading = ref(false);
 
 const columns = [

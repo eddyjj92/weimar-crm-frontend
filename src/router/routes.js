@@ -68,6 +68,14 @@ const routes = [
     ]
   },
   {
+    path: '/entities',
+    component: () => import('layouts/MainLayout.vue'),
+    meta: {requiresAuth: true},
+    children: [
+      { path: '', component: () => import('pages/entities/index.vue') },
+    ]
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')
   }
