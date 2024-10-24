@@ -124,7 +124,7 @@
           </div>
         </q-card-section>
         <q-separator inset></q-separator>
-        <q-card-section style="max-height: 70vh" class="scroll">
+        <q-card-section style="max-height: 65vh" class="scroll">
           <q-form class="q-gutter-md">
             <q-list>
               <q-item>
@@ -177,6 +177,20 @@
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Dirección</q-item-label>
                   <q-input dense outlined v-model="entity.lastnames" label="Dirección"/>
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Teléfono</q-item-label>
+                  <q-input dense outlined v-model="entity.phone" label="Teléfono"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Celular</q-item-label>
+                  <q-input dense outlined v-model="entity.cellular" label="Celular"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Fax</q-item-label>
+                  <q-input dense outlined v-model="entity.fax" label="Fax"/>
                 </q-item-section>
               </q-item>
             </q-list>
