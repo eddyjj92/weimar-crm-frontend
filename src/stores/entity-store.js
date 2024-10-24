@@ -5,9 +5,11 @@ import {Loading, Notify} from "quasar";
 
 export const useEntityStore = defineStore('entity', () => {
   let entities = ref([]);
+  let types = ref([]);
   let fetched = ref(false);
   (function construct(){
     entities.value = JSON.parse(localStorage.getItem('entities') ?? '[]');
+    types.value = JSON.parse(localStorage.getItem('entity_types') ?? '[]');
   })();
 
   const getEntities = async (token, filters = null, loading = true, hideLoading = true) => {
@@ -20,7 +22,9 @@ export const useEntityStore = defineStore('entity', () => {
       .then(res => {
         fetched.value = true;
         entities.value = res.data.entities;
+        types.value = res.data.types;
         localStorage.setItem("entities", JSON.stringify(entities.value))
+        localStorage.setItem("entity_types", JSON.stringify(types.value))
         return true
       })
       .catch(error => {

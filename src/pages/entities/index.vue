@@ -165,7 +165,18 @@ let loading = ref(false);
 
 const columns = [
   { name: "id", align: "left", label: "ID",  field: "id", sortable: true },
+  { name: "type", align: "left", label: "Tipo",  field: "type", sortable: true },
+  { name: "identification_type", align: "left", label: "Tipo ID",  field: "identification_type", sortable: true },
+  { name: "identification", align: "left", label: "ID No.",  field: "identification", sortable: true },
   { name: "name", align: "left", label: "Nombre",  field: "name", sortable: true },
+  { name: "lastnames", align: "left", label: "Apellidos",  field: "lastnames", sortable: true },
+  { name: "trade_name", align: "left", label: "Nombre Comercial",  field: "trade_name", sortable: true },
+  { name: "birthdate", align: "left", label: "Fecha Nacimiento",  field: "birthdate", sortable: true },
+  { name: "address", align: "left", label: "Dirección",  field: "address", sortable: true },
+  { name: "phone", align: "left", label: "Teléfono",  field: "phone", sortable: true },
+  { name: "cellular", align: "left", label: "Celular",  field: "cellular", sortable: true },
+
+
 ];
 
 const tableRef = ref()
