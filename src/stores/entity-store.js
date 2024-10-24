@@ -6,10 +6,13 @@ import {Loading, Notify} from "quasar";
 export const useEntityStore = defineStore('entity', () => {
   let entities = ref([]);
   let types = ref([]);
+  let id_types = ref([]);
   let fetched = ref(false);
+
   (function construct(){
     entities.value = JSON.parse(localStorage.getItem('entities') ?? '[]');
     types.value = JSON.parse(localStorage.getItem('entity_types') ?? '[]');
+    id_types.value = JSON.parse(localStorage.getItem('id_types') ?? '[]');
   })();
 
   const getEntities = async (token, filters = null, loading = true, hideLoading = true) => {
@@ -23,8 +26,10 @@ export const useEntityStore = defineStore('entity', () => {
         fetched.value = true;
         entities.value = res.data.entities;
         types.value = res.data.types;
+        id_types.value = res.data.id_types;
         localStorage.setItem("entities", JSON.stringify(entities.value))
         localStorage.setItem("entity_types", JSON.stringify(types.value))
+        localStorage.setItem("id_types", JSON.stringify(id_types.value))
         return true
       })
       .catch(error => {
@@ -170,6 +175,8 @@ export const useEntityStore = defineStore('entity', () => {
 
   return {
     entities,
+    types,
+    id_types,
     fetched,
     getEntities,
     postEntity,
