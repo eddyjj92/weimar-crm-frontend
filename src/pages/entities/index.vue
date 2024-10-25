@@ -11,6 +11,7 @@
         :grid="mode === 'grid'"
         :filter="filter"
         :pagination:sync="pagination"
+        class="my-sticky-last-column-table"
       >
         <template v-slot:top-right="props">
           <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'crear tiendas')" @click="dialog = true;" icon="add" outline color="primary" label="Registrar" class="q-mr-xs"/>
@@ -526,3 +527,24 @@ const removeSocialNetwork = () => {
 
 </script>
 
+<style lang="sass">
+.my-sticky-last-column-table
+  thead tr:last-child th:last-child, th:first-child, td:first-child
+    /* bg color is important for th; just specify one */
+    background-color: white
+
+  td:last-child
+    background-color: white
+
+  th:first-child,
+  td:first-child
+    position: sticky
+    left: 0
+    z-index: 1
+
+  th:last-child,
+  td:last-child
+    position: sticky
+    right: 0
+    z-index: 1
+</style>

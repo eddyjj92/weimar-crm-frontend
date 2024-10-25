@@ -76,7 +76,8 @@
 
 /* Estilo para la barra de desplazamiento */
 ::-webkit-scrollbar {
-  width: 12px; /* Ancho de la barra de desplazamiento */
+  width: 10px; /* Ancho de la barra de desplazamiento */
+  height: 10px;
 }
 
 /* Fondo de la barra de desplazamiento */
@@ -87,7 +88,7 @@
 /* Estilo para el "pulgar" de la barra de desplazamiento */
 ::-webkit-scrollbar-thumb {
   background: #888; /* Color del pulgar */
-  border-radius: 5px; /* Bordes redondeados */
+  border-radius: 6px; /* Bordes redondeados */
 }
 
 /* Estilo cuando el usuario pasa el mouse sobre el "pulgar" */
