@@ -197,6 +197,21 @@
                   <q-input dense outlined v-model="entity.fax" label="Fax"/>
                 </q-item-section>
               </q-item>
+
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Tipo de Persona</q-item-label>
+                  <q-select dense outlined :options="person_types" v-model="entity.person_type_id" label="Tipo de Red Social"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Tipo de Impuesto</q-item-label>
+                  <q-select dense outlined :options="tax_levels" v-model="entity.tax_level_id" label="Tipo de Red Social"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Régimen</q-item-label>
+                  <q-select dense outlined :options="tax_levels" v-model="entity.regime_id" label="Tipo de Red Social"/>
+                </q-item-section>
+              </q-item>
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Capacidad de Credito</q-item-label>
