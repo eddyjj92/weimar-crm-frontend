@@ -105,6 +105,9 @@
                     </q-icon>
                   </template>
                 </q-input>
+                <q-input debounce="300" outlined dense v-model="filters.address" v-if="col.name === 'address'" type="text" style="min-width: 60px"/>
+                <q-input debounce="300" outlined dense v-model="filters.phone" v-if="col.name === 'phone'" type="text" style="min-width: 60px"/>
+                <q-input debounce="300" outlined dense v-model="filters.cellular" v-if="col.name === 'cellular'" type="text" style="min-width: 60px"/>
               </span>
             </q-th>
             <q-th auto-width align="center">Opciones</q-th>

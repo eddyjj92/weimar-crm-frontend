@@ -33,7 +33,9 @@ export const useStoreStore = defineStore('store', () => {
         Notify.create({
           type: 'negative',
           message: message,
-          position: 'top'
+          position: 'top',
+          progress: true,
+          actions: [{ icon: 'close', color: 'white' }]
         })
         return false
       })
@@ -51,7 +53,9 @@ export const useStoreStore = defineStore('store', () => {
         Notify.create({
           type: 'positive',
           message: res.data.message,
-          position: 'top-right'
+          position: 'top-right',
+          progress: true,
+          actions: [{ icon: 'close', color: 'white' }]
         })
         return true
       })
@@ -62,7 +66,9 @@ export const useStoreStore = defineStore('store', () => {
             Notify.create({
               type: 'negative',
               message: msg,
-              position: 'top-right'
+              position: 'top-right',
+              progress: true,
+              actions: [{ icon: 'close', color: 'white' }]
             })
           }
           return false;
@@ -74,7 +80,9 @@ export const useStoreStore = defineStore('store', () => {
         Notify.create({
           type: 'negative',
           message: message,
-          position: 'top-right'
+          position: 'top-right',
+          progress: true,
+          actions: [{ icon: 'close', color: 'white' }]
         })
         return false;
       })
