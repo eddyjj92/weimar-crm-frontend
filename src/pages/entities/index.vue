@@ -201,15 +201,42 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Tipo de Persona</q-item-label>
-                  <q-select dense outlined :options="person_types" v-model="entity.person_type_id" label="Tipo de Red Social"/>
+                  <q-select
+                    dense
+                    outlined
+                    :options="person_types"
+                    v-model="entity.person_type_id"
+                    label="Tipo de Persona"
+                    option-label="name"
+                    option-value="id"
+                    map-options
+                  />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Tipo de Impuesto</q-item-label>
-                  <q-select dense outlined :options="tax_levels" v-model="entity.tax_level_id" label="Tipo de Red Social"/>
+                  <q-select
+                    dense
+                    outlined
+                    :options="tax_levels"
+                    v-model="entity.tax_level_id"
+                    label="Tipo de Impuesto"
+                    option-label="name"
+                    option-value="id"
+                    map-options
+                  />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Tipo de Régimen</q-item-label>
-                  <q-select dense outlined :options="regime_types" v-model="entity.regime_id" label="Tipo de Red Social"/>
+                  <q-select
+                    dense
+                    outlined
+                    :options="regime_types"
+                    v-model="entity.regime_id"
+                    label="Tipo de Red Social"
+                    option-label="name"
+                    option-value="id"
+                    map-options
+                  />
                 </q-item-section>
               </q-item>
               <q-item>
