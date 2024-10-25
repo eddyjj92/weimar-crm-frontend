@@ -529,25 +529,3 @@ const removeSocialNetwork = () => {
 }
 
 </script>
-
-<style lang="sass">
-.my-sticky-last-column-table
-  thead tr:last-child th:last-child, th:first-child, td:first-child
-    /* bg color is important for th; just specify one */
-    background-color: white
-
-  td:last-child
-    background-color: white
-
-  th:first-child,
-  td:first-child
-    position: sticky
-    left: 0
-    z-index: 1
-
-  th:last-child,
-  td:last-child
-    position: sticky
-    right: 0
-    z-index: 1
-</style>
