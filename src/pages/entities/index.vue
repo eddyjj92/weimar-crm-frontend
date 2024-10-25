@@ -424,13 +424,33 @@ const register = async () => {
 
 const edit = (id) => {
   const edit = entities.value.find(u => u.id === id);
+  entity.value.entity_type = edit.entity_type;
+  entity.value.identification_type = edit.identification_type;
+  entity.value.identification = edit.identification;
   entity.value.name = edit.name;
+  entity.value.lastnames = edit.lastnames;
+  entity.value.trade_name = edit.trade_name;
+  entity.value.birthdate = edit.birthdate;
+  entity.value.address = edit.address;
+  entity.value.phone = edit.phone;
+  entity.value.cellular = edit.cellular;
+  entity.value.fax = edit.fax;
+  entity.value.email = edit.email;
+  entity.value.credit_cap = edit.credit_cap;
+  entity.value.dv = edit.dv;
+  entity.value.social_networks = edit.social_networks;
+  entity.value.active = edit.active;
+  entity.value.observations = edit.observations;
+  entity.value.person_type_id = edit.person_type_id;
+  entity.value.tax_level_id = edit.tax_level_id;
+  entity.value.regime_type_id = edit.regime_type_id;
+
   selected.value = [id];
   dialog.value = true;
 }
 
 const update = async () => {
-  const updated = await entityStore.putStore(token.value, selected.value[0], store.value)
+  const updated = await entityStore.putEntity(token.value, selected.value[0], entity.value)
   if (updated){
     dialog.value = false;
     loading.value = true;
