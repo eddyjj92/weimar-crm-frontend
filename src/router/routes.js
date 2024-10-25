@@ -76,6 +76,14 @@ const routes = [
     ]
   },
   {
+    path: '/purchases',
+    component: () => import('layouts/MainLayout.vue'),
+    meta: {requiresAuth: true},
+    children: [
+      { path: '', component: () => import('pages/purchases/index.vue') },
+    ]
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')
   }

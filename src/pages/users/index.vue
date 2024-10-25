@@ -11,6 +11,7 @@
         :grid="mode === 'grid'"
         :filter="filter"
         :pagination:sync="pagination"
+        class="my-sticky-last-column-table"
       >
         <template v-slot:top-right="props">
           <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'crear usuarios')" @click="new_user=true" icon="add" outline color="primary" label="Registrar" class="q-mr-xs"/>
@@ -140,7 +141,7 @@
           </div>
         </q-card-section>
         <q-separator inset></q-separator>
-        <q-card-section class="q-pt-none">
+        <q-card-section style="max-height: 65vh" class="scroll">
           <q-form class="q-gutter-md">
             <q-list>
               <q-item>

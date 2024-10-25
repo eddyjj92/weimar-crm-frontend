@@ -95,3 +95,29 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555; /* Color al pasar el mouse */
 }
+
+/* Estilo para fijar primera y ultima columna en las tablas */
+.my-sticky-last-column-table thead tr:last-child th:last-child,
+.my-sticky-last-column-table th:first-child,
+.my-sticky-last-column-table td:first-child {
+  /* bg color is important for th; just specify one */
+  background-color: white;
+}
+
+.my-sticky-last-column-table td:last-child {
+  background-color: white;
+}
+
+.my-sticky-last-column-table th:first-child,
+.my-sticky-last-column-table td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.my-sticky-last-column-table th:last-child,
+.my-sticky-last-column-table td:last-child {
+  position: sticky;
+  right: 0;
+  z-index: 1;
+}
