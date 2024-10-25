@@ -5,16 +5,22 @@ import {Loading, Notify} from "quasar";
 
 export const useEntityStore = defineStore('entity', () => {
   let entities = ref([]);
-  let types = ref([]);
+  let entity_types = ref([]);
   let id_types = ref([]);
   let sn_types = ref([]);
+  let person_types = ref([]);
+  let regime_types = ref([]);
+  let tax_levels = ref([]);
   let fetched = ref(false);
 
   (function construct(){
     entities.value = JSON.parse(localStorage.getItem('entities') ?? '[]');
-    types.value = JSON.parse(localStorage.getItem('entity_types') ?? '[]');
+    entity_types.value = JSON.parse(localStorage.getItem('entity_types') ?? '[]');
     id_types.value = JSON.parse(localStorage.getItem('id_types') ?? '[]');
     sn_types.value = JSON.parse(localStorage.getItem('sn_types') ?? '[]');
+    person_types.value = JSON.parse(localStorage.getItem('person_types') ?? '[]');
+    regime_types.value = JSON.parse(localStorage.getItem('regime_types') ?? '[]');
+    tax_levels.value = JSON.parse(localStorage.getItem('tax_levels') ?? '[]');
   })();
 
   const getEntities = async (token, filters = null, loading = true, hideLoading = true) => {
@@ -27,13 +33,19 @@ export const useEntityStore = defineStore('entity', () => {
       .then(res => {
         fetched.value = true;
         entities.value = res.data.entities;
-        types.value = res.data.types;
+        entity_types.value = res.data.entity_types;
         id_types.value = res.data.id_types;
         sn_types.value = res.data.sn_types;
+        person_types.value = res.data.person_types;
+        regime_types.value = res.data.regime_types;
+        tax_levels.value = res.data.tax_levels;
         localStorage.setItem("entities", JSON.stringify(entities.value))
         localStorage.setItem("entity_types", JSON.stringify(types.value))
         localStorage.setItem("id_types", JSON.stringify(id_types.value))
         localStorage.setItem("sn_types", JSON.stringify(sn_types.value))
+        localStorage.setItem("person_types", JSON.stringify(person_types.value))
+        localStorage.setItem("regime_types", JSON.stringify(regime_types.value))
+        localStorage.setItem("tax_levels", JSON.stringify(tax_levels.value))
         return true
       })
       .catch(error => {
@@ -179,9 +191,12 @@ export const useEntityStore = defineStore('entity', () => {
 
   return {
     entities,
-    types,
+    entity_types,
     id_types,
     sn_types,
+    person_types,
+    regime_types,
+    tax_levels,
     fetched,
     getEntities,
     postEntity,

@@ -130,7 +130,7 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Tipo de Entidad</q-item-label>
-                  <q-select dense outlined v-model="entity.type" :options="types" label="Tipo de Entidad"/>
+                  <q-select dense outlined v-model="entity.type" :options="entity_types" label="Tipo de Entidad"/>
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Tipo de Identificación</q-item-label>
@@ -282,7 +282,7 @@ const $q = useQuasar();
 const authStore = useAuthStore();
 const {token, user} = storeToRefs(authStore);
 const entityStore = useEntityStore();
-const {entities, types, id_types, sn_types} = storeToRefs(entityStore);
+const {entities, entity_types, id_types, sn_types} = storeToRefs(entityStore);
 let loading = ref(false);
 
 const columns = [
