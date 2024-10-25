@@ -208,7 +208,7 @@
                   <q-select dense outlined :options="tax_levels" v-model="entity.tax_level_id" label="Tipo de Red Social"/>
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Régimen</q-item-label>
+                  <q-item-label class="q-pb-xs">Tipo de Régimen</q-item-label>
                   <q-select dense outlined :options="tax_levels" v-model="entity.regime_id" label="Tipo de Red Social"/>
                 </q-item-section>
               </q-item>
