@@ -114,7 +114,7 @@
         </template>
       </q-table>
     </q-card>
-    <q-dialog v-model="dialog" persistent @before-hide="selected = []; store = {}">
+    <q-dialog v-model="dialog" persistent @before-hide="selected = []; entity = {social_networks: [], active: false}">
       <q-card style="width: 650px; max-width: 80vw;">
         <q-card-section>
           <div class="text-h6">
@@ -206,9 +206,38 @@
                   <q-item-label class="q-pb-xs">DV</q-item-label>
                   <q-input dense outlined v-model="entity.dv" label="DV"/>
                 </q-item-section>
+              </q-item>
+              <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Redes Sociales</q-item-label>
-                  <q-input dense outlined v-model="entity.fax" label="Redes Sociales"/>
+                  <q-item v-for="(sn, i) in entity.social_networks" :key="i" class="q-px-none">
+                    <q-item-section>
+                      <q-select dense outlined :options="sn_types" v-model="sn.social_network" label="Tipo de Red Social"/>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-input dense outlined v-model="sn.url" label="URL Perfil"/>
+                    </q-item-section>
+                  </q-item>
+                  <span class="text-center text-bold text-h6 text-grey-8" v-if="entity.social_networks.length === 0">Sin redes sociales</span>
+                  <q-item>
+                    <q-item-section>
+                      <q-btn @click="addSocialNetwork" color="positive" icon="add" >Agregar</q-btn>
+                    </q-item-section>
+                    <q-item-section v-if="entity.social_networks.length > 0">
+                      <q-btn @click="removeSocialNetwork" color="negative" icon="remove" >Remover</q-btn>
+                    </q-item-section>
+                  </q-item>
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-checkbox v-model="entity.active" label="Activo" />
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Observaciones</q-item-label>
+                  <q-input outlined type="textarea" v-model="entity.observations" label="Observaciones" />
                 </q-item-section>
               </q-item>
             </q-list>
@@ -238,7 +267,7 @@ const $q = useQuasar();
 const authStore = useAuthStore();
 const {token, user} = storeToRefs(authStore);
 const entityStore = useEntityStore();
-const {entities, types, id_types} = storeToRefs(entityStore);
+const {entities, types, id_types, sn_types} = storeToRefs(entityStore);
 let loading = ref(false);
 
 const columns = [
@@ -253,8 +282,6 @@ const columns = [
   { name: "address", align: "left", label: "Dirección",  field: "address", sortable: true },
   { name: "phone", align: "left", label: "Teléfono",  field: "phone", sortable: true },
   { name: "cellular", align: "left", label: "Celular",  field: "cellular", sortable: true },
-
-
 ];
 
 const tableRef = ref()
@@ -263,7 +290,10 @@ let filter = ref("")
 let filters = reactive({
   name: "",
 });
-let entity = ref({})
+let entity = ref({
+  social_networks: [],
+  active: false,
+})
 let dialog = ref(false);
 let mode = ref("list")
 let pagination = ref({
@@ -382,6 +412,14 @@ const remove = async () => {
     await entityStore.getEntities(token.value, null, false)
       .finally(() => loading.value = false);
   }
+}
+
+const addSocialNetwork = () => {
+  entity.value.social_networks.push({ social_network: "", url: "" });
+}
+
+const removeSocialNetwork = () => {
+  entity.value.social_networks.pop()
 }
 
 </script>

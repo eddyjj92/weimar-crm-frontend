@@ -7,12 +7,14 @@ export const useEntityStore = defineStore('entity', () => {
   let entities = ref([]);
   let types = ref([]);
   let id_types = ref([]);
+  let sn_types = ref([]);
   let fetched = ref(false);
 
   (function construct(){
     entities.value = JSON.parse(localStorage.getItem('entities') ?? '[]');
     types.value = JSON.parse(localStorage.getItem('entity_types') ?? '[]');
     id_types.value = JSON.parse(localStorage.getItem('id_types') ?? '[]');
+    sn_types.value = JSON.parse(localStorage.getItem('sn_types') ?? '[]');
   })();
 
   const getEntities = async (token, filters = null, loading = true, hideLoading = true) => {
@@ -27,9 +29,11 @@ export const useEntityStore = defineStore('entity', () => {
         entities.value = res.data.entities;
         types.value = res.data.types;
         id_types.value = res.data.id_types;
+        sn_types.value = res.data.sn_types;
         localStorage.setItem("entities", JSON.stringify(entities.value))
         localStorage.setItem("entity_types", JSON.stringify(types.value))
         localStorage.setItem("id_types", JSON.stringify(id_types.value))
+        localStorage.setItem("sn_types", JSON.stringify(sn_types.value))
         return true
       })
       .catch(error => {
@@ -177,6 +181,7 @@ export const useEntityStore = defineStore('entity', () => {
     entities,
     types,
     id_types,
+    sn_types,
     fetched,
     getEntities,
     postEntity,
