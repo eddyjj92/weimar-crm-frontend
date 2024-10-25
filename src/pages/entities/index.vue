@@ -317,7 +317,7 @@ let loading = ref(false);
 
 const columns = [
   { name: "id", align: "left", label: "ID",  field: "id", sortable: true },
-  { name: "type", align: "left", label: "Tipo",  field: "type", sortable: true },
+  { name: "entity_type", align: "left", label: "Tipo",  field: "entity_type", sortable: true },
   { name: "identification_type", align: "left", label: "Tipo ID",  field: "identification_type", sortable: true },
   { name: "identification", align: "left", label: "ID No.",  field: "identification", sortable: true },
   { name: "name", align: "left", label: "Nombre",  field: "name", sortable: true },
