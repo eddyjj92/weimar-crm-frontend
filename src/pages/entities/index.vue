@@ -69,13 +69,41 @@
             >
               <q-checkbox :disable="entities.length === 0" class="float-left" v-if="col.label === 'ID'" v-model="checkAll"/>
               <span class="float-left text-bold" style="font-size: 11px" v-else>{{ col.label }}<br>
-                <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.name === 'entity_type'" type="text" style="min-width: 60px"/>
-                <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.name === 'identification_type'" type="text" style="min-width: 60px"/>
+                <q-select v-if="col.name === 'entity_type'" outlined dense
+                  :options="[{label: 'Todos', value: ''}, ...entity_types]"
+                  v-model="filters.entity_type" style="min-width: 100px"
+                  type="text" emit-value map-options
+                >
+                  <template v-slot:selected-item="{ opt }">
+                    <span style="margin-bottom: 20px;">{{ opt.label }}</span>
+                  </template>
+                </q-select>
+                <q-select v-if="col.name === 'identification_type'" outlined dense
+                          :options="[{label: 'Todos', value: ''}, ...id_types]"
+                          v-model="filters.identification_type" style="min-width: 100px"
+                          type="text" emit-value map-options
+                >
+                  <template v-slot:selected-item="{ opt }">
+                    <span style="margin-bottom: 20px;">{{ opt.label }}</span>
+                  </template>
+                </q-select>
                 <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.name === 'identification'" type="text" style="min-width: 60px"/>
                 <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.name === 'name'" type="text" style="min-width: 60px"/>
                 <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.name === 'lastnames'" type="text" style="min-width: 60px"/>
                 <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.name === 'trade_name'" type="text" style="min-width: 60px"/>
-
+                <q-input v-if="col.name === 'birthdate'" outlined dense v-model="filters.birthdate" mask="##/##/####" debounce="300" style="min-width: 100px">
+                  <template v-slot:append>
+                    <q-icon size="xs" name="event" class="cursor-pointer q-mr-xs">
+                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                        <q-date v-model="filters.birthdate" mask="DD/MM/YYYY">
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Close" color="primary" flat />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
               </span>
             </q-th>
             <q-th auto-width align="center">Opciones</q-th>
@@ -339,7 +367,10 @@ const tableRef = ref()
 const selected = ref([])
 let filter = ref("")
 let filters = reactive({
+  entity_type: "",
+  identification_type: "",
   name: "",
+  birthdate: null
 });
 let entity = ref({
   social_networks: [],
