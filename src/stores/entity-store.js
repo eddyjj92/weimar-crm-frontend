@@ -39,13 +39,13 @@ export const useEntityStore = defineStore('entity', () => {
         person_types.value = res.data.person_types;
         regime_types.value = res.data.regime_types;
         tax_levels.value = res.data.tax_levels;
-        localStorage.setItem("entities", JSON.stringify(entities.value))
-        localStorage.setItem("entity_types", JSON.stringify(types.value))
-        localStorage.setItem("id_types", JSON.stringify(id_types.value))
-        localStorage.setItem("sn_types", JSON.stringify(sn_types.value))
-        localStorage.setItem("person_types", JSON.stringify(person_types.value))
-        localStorage.setItem("regime_types", JSON.stringify(regime_types.value))
-        localStorage.setItem("tax_levels", JSON.stringify(tax_levels.value))
+        localStorage.setItem("entities", JSON.stringify(entities.value));
+        localStorage.setItem("entity_types", JSON.stringify(entity_types.value));
+        localStorage.setItem("id_types", JSON.stringify(id_types.value));
+        localStorage.setItem("sn_types", JSON.stringify(sn_types.value));
+        localStorage.setItem("person_types", JSON.stringify(person_types.value));
+        localStorage.setItem("regime_types", JSON.stringify(regime_types.value));
+        localStorage.setItem("tax_levels", JSON.stringify(tax_levels.value));
         return true
       })
       .catch(error => {

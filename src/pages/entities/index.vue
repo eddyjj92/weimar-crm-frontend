@@ -180,7 +180,7 @@
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Dirección</q-item-label>
-                  <q-input dense outlined v-model="entity.lastnames" label="Dirección"/>
+                  <q-input dense outlined v-model="entity.address" label="Dirección"/>
                 </q-item-section>
               </q-item>
               <q-item>
@@ -209,7 +209,7 @@
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Tipo de Régimen</q-item-label>
-                  <q-select dense outlined :options="tax_levels" v-model="entity.regime_id" label="Tipo de Red Social"/>
+                  <q-select dense outlined :options="regime_types" v-model="entity.regime_id" label="Tipo de Red Social"/>
                 </q-item-section>
               </q-item>
               <q-item>
@@ -282,7 +282,7 @@ const $q = useQuasar();
 const authStore = useAuthStore();
 const {token, user} = storeToRefs(authStore);
 const entityStore = useEntityStore();
-const {entities, entity_types, id_types, sn_types} = storeToRefs(entityStore);
+const {entities, entity_types, id_types, sn_types, person_types, regime_types, tax_levels} = storeToRefs(entityStore);
 let loading = ref(false);
 
 const columns = [
