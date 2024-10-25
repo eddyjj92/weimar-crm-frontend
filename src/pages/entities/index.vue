@@ -231,7 +231,7 @@
                     dense
                     outlined
                     :options="regime_types"
-                    v-model="entity.regime_id"
+                    v-model="entity.regime_type_id"
                     label="Tipo de Red Social"
                     option-label="name"
                     option-value="id"
