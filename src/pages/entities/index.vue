@@ -130,11 +130,11 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Tipo de Entidad</q-item-label>
-                  <q-select dense outlined v-model="entity.type" :options="entity_types" label="Tipo de Entidad"/>
+                  <q-select dense outlined emit-value map-options v-model="entity.entity_type" :options="entity_types" label="Tipo de Entidad"/>
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Tipo de Identificación</q-item-label>
-                  <q-select dense outlined v-model="entity.identification_type" :options="id_types" label="Tipo de Identificación"/>
+                  <q-select dense outlined emit-value map-options v-model="entity.identification_type" :options="id_types" label="Tipo de Identificación"/>
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Identificación</q-item-label>
@@ -210,6 +210,7 @@
                     option-label="name"
                     option-value="id"
                     map-options
+                    emit-value
                   />
                 </q-item-section>
                 <q-item-section>
@@ -223,6 +224,7 @@
                     option-label="name"
                     option-value="id"
                     map-options
+                    emit-value
                   />
                 </q-item-section>
                 <q-item-section>
@@ -236,6 +238,7 @@
                     option-label="name"
                     option-value="id"
                     map-options
+                    emit-value
                   />
                 </q-item-section>
               </q-item>
@@ -254,7 +257,7 @@
                   <q-item-label class="q-pb-xs">Redes Sociales</q-item-label>
                   <q-item v-for="(sn, i) in entity.social_networks" :key="i" class="q-px-none">
                     <q-item-section>
-                      <q-select dense outlined :options="sn_types" v-model="sn.social_network" label="Tipo de Red Social"/>
+                      <q-select dense outlined emit-value map-options :options="sn_types" v-model="sn.social_network" label="Tipo de Red Social"/>
                     </q-item-section>
                     <q-item-section>
                       <q-input dense outlined v-model="sn.url" label="URL Perfil"/>
