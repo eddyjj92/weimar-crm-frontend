@@ -156,6 +156,10 @@
                   <q-item-label class="q-pb-xs">Nombre Comercial</q-item-label>
                   <q-input dense outlined v-model="entity.trade_name" label="Nombre Comercial"/>
                 </q-item-section>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Correo Electrónico</q-item-label>
+                  <q-input dense outlined v-model="entity.email" label="Correo Electrónico"/>
+                </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
@@ -191,6 +195,20 @@
                 <q-item-section>
                   <q-item-label class="q-pb-xs">Fax</q-item-label>
                   <q-input dense outlined v-model="entity.fax" label="Fax"/>
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Capacidad de Credito</q-item-label>
+                  <q-input dense outlined v-model="entity.credit_cap" label="Capacidad de Credito"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">DV</q-item-label>
+                  <q-input dense outlined v-model="entity.dv" label="DV"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Redes Sociales</q-item-label>
+                  <q-input dense outlined v-model="entity.fax" label="Redes Sociales"/>
                 </q-item-section>
               </q-item>
             </q-list>
