@@ -68,8 +68,14 @@
               auto-width
             >
               <q-checkbox :disable="entities.length === 0" class="float-left" v-if="col.label === 'ID'" v-model="checkAll"/>
-              <span class="float-left" v-else>{{ col.label }}<br>
-                <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.label === 'Nombre'" type="text"/>
+              <span class="float-left text-bold" style="font-size: 11px" v-else>{{ col.label }}<br>
+                <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.name === 'entity_type'" type="text" style="min-width: 60px"/>
+                <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.name === 'identification_type'" type="text" style="min-width: 60px"/>
+                <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.name === 'identification'" type="text" style="min-width: 60px"/>
+                <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.name === 'name'" type="text" style="min-width: 60px"/>
+                <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.name === 'lastnames'" type="text" style="min-width: 60px"/>
+                <q-input debounce="300" outlined dense v-model="filters.name" v-if="col.name === 'trade_name'" type="text" style="min-width: 60px"/>
+
               </span>
             </q-th>
             <q-th auto-width align="center">Opciones</q-th>
