@@ -40,11 +40,11 @@
             <q-select
               v-model="purchase.entity_id"
               :options="suppliers"
-              option-label="name"
+              option-label="trade_name"
               option-value="id"
               emit-value
               map-options
-              label="Entidad"
+              label="Proveedor"
               dense
             />
           </q-item-section>
@@ -95,29 +95,29 @@
             ></q-select>
           </q-item-section>
           <q-item-section>
-            <q-input outlined dense label="Precio Compra"></q-input>
+            <q-input outlined dense v-model="dt.purchase_price" :disable="!dt.item_id" label="Precio Compra"></q-input>
           </q-item-section>
           <q-item-section>
-            <q-input outlined dense label="Precio Venta"></q-input>
+            <q-input outlined dense v-model="dt.sale_price" :disable="!dt.item_id" label="Precio Venta"></q-input>
           </q-item-section>
           <q-item-section>
-            <q-input outlined dense label="% Descuento"></q-input>
+            <q-input type="number" v-model="dt.discount" :disable="!dt.item_id" outlined dense label="% Descuento"></q-input>
           </q-item-section>
           <q-item-section>
-            <q-input type="number" min="0" outlined dense label="Unidades"></q-input>
+            <q-input type="number" v-model="dt.units" min="1" :disable="!dt.item_id" outlined dense label="Unidades"></q-input>
           </q-item-section>
         </q-item>
       </q-card-section>
       <q-card-section class="full-width">
         <q-item>
           <q-item-section >
-            <q-btn @click="addDetail" class="full-width bg-positive" icon="add">Nuevo Detalle</q-btn>
+            <q-btn @click="addDetail" class="full-width bg-positive text-white" icon="add">Nuevo Detalle</q-btn>
           </q-item-section>
           <q-item-section v-if="purchase.details.length > 0">
-            <q-btn class="full-width bg-negative" icon="remove">Eliminar Detalle</q-btn>
+            <q-btn @click="removeDetail" class="full-width bg-negative text-white" icon="remove">Eliminar Detalle</q-btn>
           </q-item-section>
           <q-item-section v-if="purchase.details.length > 0">
-            <q-btn class="full-width bg-primary" icon="save">Confirmar Compra</q-btn>
+            <q-btn class="full-width bg-primary text-white" icon="save">Confirmar Compra</q-btn>
           </q-item-section>
         </q-item>
       </q-card-section>
@@ -155,7 +155,17 @@ onMounted(async () => {
 
 const addDetail = () => {
   purchase.value.details.push({
-
+    item_id: null,
+    color_id: null,
+    size_id: null,
+    purchase_price: null,
+    sale_price: null,
+    discount: 0,
+    units: 1,
   });
+}
+
+const removeDetail = () => {
+  purchase.value.details.pop();
 }
 </script>
