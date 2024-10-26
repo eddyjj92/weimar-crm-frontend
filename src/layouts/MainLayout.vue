@@ -78,7 +78,7 @@
             <q-list padding>
               <q-item
                 active-class="tab-active"
-                @click="storePageDetails('Dashboard', 'dashboard', 'dashboard')"
+                @click="storePageDetails('Dashboard', '/dashboard', 'dashboard')"
                 to="/dashboard"
                 exact
                 class="q-ma-sm navigation-item"
@@ -97,7 +97,7 @@
               <q-item
                 v-if="user?.roles[0].permissions.find(p => p.name === 'listar usuarios')"
                 active-class="tab-active"
-                @click="storePageDetails('Usuarios del Sistema', 'users', 'group')"
+                @click="storePageDetails('Usuarios del Sistema', '/users', 'group')"
                 to="/users"
                 class="q-ma-sm navigation-item"
                 clickable
@@ -115,7 +115,7 @@
               <q-item
                 v-if="user?.roles[0].permissions.find(p => p.name === 'listar roles')"
                 active-class="tab-active"
-                @click="storePageDetails('Roles de Usuario', 'roles', 'admin_panel_settings')"
+                @click="storePageDetails('Roles de Usuario', '/roles', 'admin_panel_settings')"
                 to="/roles"
                 class="q-ma-sm navigation-item"
                 clickable
@@ -133,7 +133,7 @@
               <q-item
                 v-if="user?.roles[0].permissions.find(p => p.name === 'listar colores')"
                 active-class="tab-active"
-                @click="storePageDetails('Colores', 'colors', 'palette')"
+                @click="storePageDetails('Colores', '/colors', 'palette')"
                 to="/colors"
                 class="q-ma-sm navigation-item"
                 clickable
@@ -151,7 +151,7 @@
               <q-item
                 v-if="user?.roles[0].permissions.find(p => p.name === 'listar grupos')"
                 active-class="tab-active"
-                @click="storePageDetails('Grupos', 'groups', 'category')"
+                @click="storePageDetails('Grupos', '/groups', 'category')"
                 to="/groups"
                 class="q-ma-sm navigation-item"
                 clickable
@@ -169,7 +169,7 @@
               <q-item
                 v-if="user?.roles[0].permissions.find(p => p.name === 'listar ivas')"
                 active-class="tab-active"
-                @click="storePageDetails('IVA', 'ivas', 'price_check')"
+                @click="storePageDetails('IVA', '/ivas', 'price_check')"
                 to="/ivas"
                 class="q-ma-sm navigation-item"
                 clickable
@@ -187,7 +187,7 @@
               <q-item
                 v-if="user?.roles[0].permissions.find(p => p.name === 'listar artículos')"
                 active-class="tab-active"
-                @click="storePageDetails('Artículos', 'items', 'widgets')"
+                @click="storePageDetails('Artículos', '/items', 'widgets')"
                 to="/items"
                 class="q-ma-sm navigation-item"
                 clickable
@@ -205,7 +205,7 @@
               <q-item
                 v-if="user?.roles[0].permissions.find(p => p.name === 'listar artículos')"
                 active-class="tab-active"
-                @click="storePageDetails('Tiendas', 'stores', 'store')"
+                @click="storePageDetails('Tiendas', '/stores', 'store')"
                 to="/stores"
                 class="q-ma-sm navigation-item"
                 clickable
@@ -223,7 +223,7 @@
               <q-item
                 v-if="user?.roles[0].permissions.find(p => p.name === 'listar entidades')"
                 active-class="tab-active"
-                @click="storePageDetails('Entidades', 'entities', 'hail')"
+                @click="storePageDetails('Entidades', '/entities', 'hail')"
                 to="/entities"
                 class="q-ma-sm navigation-item"
                 clickable
@@ -241,7 +241,7 @@
               <q-item
                 v-if="user?.roles[0].permissions.find(p => p.name === 'listar compras')"
                 active-class="tab-active"
-                @click="storePageDetails('Compras', 'purchases', 'shopping_cart')"
+                @click="storePageDetails('Compras', '/purchases', 'shopping_cart')"
                 to="/purchases"
                 class="q-ma-sm navigation-item"
                 clickable

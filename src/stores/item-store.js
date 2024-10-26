@@ -5,6 +5,7 @@ import {Loading, Notify} from "quasar";
 
 export const useItemStore = defineStore('item', () => {
   let items = ref([]);
+  let fetched = ref(false);
   (function construct(){
     items.value = JSON.parse(localStorage.getItem('items') ?? '[]');
   })();
@@ -17,6 +18,7 @@ export const useItemStore = defineStore('item', () => {
       }
     })
       .then(res => {
+        fetched.value = true;
         items.value = res.data.items;
         localStorage.setItem("items", JSON.stringify(items.value))
         return true
@@ -245,6 +247,7 @@ export const useItemStore = defineStore('item', () => {
 
   return {
     items,
+    fetched,
     getItems,
     postItem,
     putItem,

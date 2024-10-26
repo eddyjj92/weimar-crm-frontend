@@ -81,6 +81,7 @@ const routes = [
     meta: {requiresAuth: true},
     children: [
       { path: '', component: () => import('pages/purchases/index.vue') },
+      { path: 'create', component: () => import('pages/purchases/create.vue') },
     ]
   },
   {

@@ -14,7 +14,7 @@
         class="my-sticky-last-column-table"
       >
         <template v-slot:top-right="props">
-          <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'crear compras')" @click="dialog = true;" icon="add" outline color="primary" label="Registrar" class="q-mr-xs"/>
+          <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'crear compras')" to="/purchases/create" icon="add" outline color="primary" label="Registrar" class="q-mr-xs"/>
 
           <q-input outlined dense debounce="300" v-model="filter" placeholder="Buscar">
             <template v-slot:append>
@@ -84,7 +84,7 @@
                   </template>
                 </q-input>
                 <q-select v-if="col.name === 'payment_method'" outlined dense
-                          :options="[{label: 'Todos', value: ''}, ...payment_methods]"
+                          :options="[{label: 'Todos', value: null}, ...payment_methods]"
                           v-model="filters.payment_method" style="min-width: 100px"
                           type="text" emit-value map-options
                 >
@@ -109,7 +109,7 @@
                 </q-input>
                 <q-input v-if="col.name === 'discount'" debounce="300" outlined dense v-model="filters.discount" type="text" style="min-width: 60px"/>
                 <q-select v-if="col.name === 'state'" outlined dense
-                          :options="[{label: 'Todos', value: ''}, ...purchase_states]"
+                          :options="[{label: 'Todos', value: null}, ...purchase_states]"
                           v-model="filters.state" style="min-width: 100px"
                           type="text" emit-value map-options
                 >
@@ -121,7 +121,33 @@
                 <q-input v-if="col.name === 'total_units'" debounce="300" outlined dense v-model="filters.total_units" type="text" style="min-width: 60px"/>
                 <q-input v-if="col.name === 'subtotal'" debounce="300" outlined dense v-model="filters.subtotal" type="text" style="min-width: 60px"/>
                 <q-input v-if="col.name === 'total'" debounce="300" outlined dense v-model="filters.total" type="text" style="min-width: 60px"/>
-
+                <q-select v-if="col.name === 'entity_id'" outlined dense option-label="name" option-value="id"
+                            :options="[{name: 'Todos', id: null}, ...suppliers]"
+                            v-model="filters.entity_id" style="min-width: 100px"
+                            type="text" emit-value map-options
+                >
+                  <template v-slot:selected-item="{ opt }">
+                    <span style="margin-bottom: 20px;">{{ opt.name }}</span>
+                  </template>
+                </q-select>
+                <q-select v-if="col.name === 'iva_id'" outlined dense :option-label="iva => iva.percent !== 'Todos' ? `${iva.percent}%` : iva.percent" option-value="id"
+                          :options="[{percent: 'Todos', id: null}, ...ivas]"
+                          v-model="filters.iva_id" style="min-width: 100px"
+                          type="text" emit-value map-options
+                >
+                  <template v-slot:selected-item="{ opt }">
+                    <span style="margin-bottom: 20px;">{{ opt.percent !== 'Todos' ? `${opt.percent}%` : opt.percent}}</span>
+                  </template>
+                </q-select>
+                <q-select v-if="col.name === 'store_id'" outlined dense option-label="name" option-value="id"
+                          :options="[{name: 'Todos', id: null}, ...stores]"
+                          v-model="filters.store_id" style="min-width: 100px"
+                          type="text" emit-value map-options
+                >
+                  <template v-slot:selected-item="{ opt }">
+                    <span style="margin-bottom: 20px;">{{ opt.name}}</span>
+                  </template>
+                </q-select>
               </span>
             </q-th>
             <q-th auto-width align="center">Opciones</q-th>
@@ -360,12 +386,18 @@ import DeleteConfirmationDialog from "components/DeleteConfirmationDialog.vue";
 import {useColorStore} from "stores/color-store";
 import {useEntityStore} from "stores/entity-store";
 import {usePurchaseStore} from "stores/purchase-store.js";
+import {useIvaStore} from "stores/iva-store.js";
+import {useStoreStore} from "stores/store-store.js";
 
 const $q = useQuasar();
 const authStore = useAuthStore();
 const {token, user} = storeToRefs(authStore);
 const purchaseStore = usePurchaseStore();
-const {purchases, payment_methods, purchase_states} = storeToRefs(purchaseStore);
+const {purchases, suppliers, payment_methods, purchase_states} = storeToRefs(purchaseStore);
+const ivaStore = useIvaStore();
+const {ivas} = storeToRefs(ivaStore);
+const storeStore = useStoreStore()
+const {stores} = storeToRefs(storeStore)
 let loading = ref(false);
 
 const columns = [
@@ -390,7 +422,11 @@ const tableRef = ref()
 const selected = ref([])
 let filter = ref("")
 let filters = reactive({
-
+  payment_method:null,
+  state: null,
+  entity_id: null,
+  iva_id: null,
+  store_id: null
 });
 let purchase = ref({
 
