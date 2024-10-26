@@ -117,7 +117,7 @@
             <q-btn @click="removeDetail" class="full-width bg-negative text-white" icon="remove">Eliminar Detalle</q-btn>
           </q-item-section>
           <q-item-section v-if="purchase.details.length > 0">
-            <q-btn class="full-width bg-primary text-white" icon="save">Confirmar Compra</q-btn>
+            <q-btn @click="register" class="full-width bg-primary text-white" icon="save">Confirmar Compra</q-btn>
           </q-item-section>
         </q-item>
       </q-card-section>
@@ -133,7 +133,9 @@ import {useAuthStore} from "stores/auth-store";
 import {usePurchaseStore} from "stores/purchase-store.js";
 import {useIvaStore} from "stores/iva-store.js";
 import {useItemStore} from "stores/item-store.js";
+import {useRouter} from "vue-router";
 
+const $router = useRouter();
 const $q = useQuasar();
 const authStore = useAuthStore();
 const {token, user} = storeToRefs(authStore);
@@ -167,5 +169,13 @@ const addDetail = () => {
 
 const removeDetail = () => {
   purchase.value.details.pop();
+}
+
+
+const register = async () => {
+  const response = await purchaseStore.postPurchase(token.value, purchase.value)
+  if(await response){
+    await $router.push({ path: '/purchases' })
+  }
 }
 </script>
