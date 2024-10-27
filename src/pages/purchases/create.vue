@@ -98,10 +98,10 @@
             <q-input outlined dense v-model="dt.purchase_price" :disable="!dt.item_id" label="Precio Compra"></q-input>
           </q-item-section>
           <q-item-section>
-            <q-input outlined dense v-model="dt.sale_price" :disable="!dt.item_id" label="Precio Venta"></q-input>
+            <q-input outlined dense v-model="dt.sell_price" :disable="!dt.item_id" label="Precio Venta"></q-input>
           </q-item-section>
           <q-item-section>
-            <q-input type="number" v-model="dt.discount" :disable="!dt.item_id" outlined dense label="% Descuento"></q-input>
+            <q-input type="number" v-model="dt.percent_discount" :disable="!dt.item_id" outlined dense label="% Descuento"></q-input>
           </q-item-section>
           <q-item-section>
             <q-input type="number" v-model="dt.units" min="1" :disable="!dt.item_id" outlined dense label="Unidades"></q-input>
