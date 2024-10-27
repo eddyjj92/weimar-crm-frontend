@@ -378,7 +378,7 @@
 </template>
 
 <script setup>
-import {exportFile, useQuasar} from "quasar";
+import {date, exportFile, useQuasar} from "quasar";
 import {onMounted, reactive, ref, watch} from 'vue'
 import {storeToRefs} from "pinia";
 import {useAuthStore} from "stores/auth-store";
@@ -401,20 +401,20 @@ const {stores} = storeToRefs(storeStore)
 let loading = ref(false);
 
 const columns = [
-  { name: "id", align: "left", label: "ID",  field: "id", sortable: true },
-  { name: "purchase_date", align: "left", label: "Fecha",  field: "purchase_date", sortable: true },
-  { name: "payment_method", align: "left", label: "Método de Pago ",  field: "payment_method", sortable: true },
+  { name: "id", align: "left", label: "ID",  field: "id", sortable: true, },
+  { name: "purchase_date", align: "left", label: "Fecha",  field: "purchase_date", sortable: true, format: (val, row) => date.formatDate(new Date(val), "DD/MM/YYYY"), },
+  { name: "payment_method", align: "left", label: "Método de Pago ",  field: "payment_method", sortable: true, format: (val, row) => payment_methods.value.find(pm => pm.value === val)?.label },
   { name: "term", align: "left", label: "Plazo",  field: "term", sortable: true },
   { name: "invoice", align: "left", label: "Factura",  field: "invoice", sortable: true },
-  { name: "invoice_date", align: "left", label: "Fecha Factura",  field: "invoice_date", sortable: true },
+  { name: "invoice_date", align: "left", label: "Fecha Factura",  field: "invoice_date", sortable: true, format: (val, row) => date.formatDate(new Date(val), "DD/MM/YYYY"), },
   { name: "discount", align: "left", label: "Descuento",  field: "discount", sortable: true },
-  { name: "state", align: "left", label: "Estado",  field: "state", sortable: true },
+  { name: "state", align: "left", label: "Estado",  field: "state", sortable: true, format: (val, row) => purchase_states.value.find(pm => pm.value === val)?.label },
   { name: "balance", align: "left", label: "Saldo",  field: "balance", sortable: true },
   { name: "total_units", align: "left", label: "Total de Unidades",  field: "total_units", sortable: true },
   { name: "subtotal", align: "left", label: "Subtotal",  field: "subtotal", sortable: true },
   { name: "total", align: "left", label: "Total",  field: "subtotal", sortable: true },
-  { name: "entity_id", align: "left", label: "Proveedor",  field: "entity_id", sortable: true },
-  { name: "iva_id", align: "left", label: "IVA",  field: "iva_id", sortable: true },
+  { name: "entity_id", align: "left", label: "Proveedor",  field: "entity_id", sortable: true, format: (val, row) => suppliers.value.find(pm => pm.id === val)?.trade_name },
+  { name: "iva_id", align: "left", label: "IVA",  field: "iva_id", sortable: true, format: (val, row) => ivas.value.find(i => i.id === val)?.percent+'%' },
   { name: "store_id", align: "left", label: "Tienda",  field: "store_id", sortable: true },
 ];
 
