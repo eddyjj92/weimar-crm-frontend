@@ -13,6 +13,8 @@
             <q-select
               v-model="purchase.payment_method"
               :options="payment_methods"
+              map-options
+              emit-value
               label="Método de Pago"
               dense
             />
@@ -161,8 +163,8 @@ const addDetail = () => {
     color_id: null,
     size_id: null,
     purchase_price: null,
-    sale_price: null,
-    discount: 0,
+    sell_price: null,
+    percent_discount: 0,
     units: 1,
   });
 }
