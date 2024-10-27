@@ -415,7 +415,7 @@ const columns = [
   { name: "total", align: "left", label: "Total",  field: "subtotal", sortable: true },
   { name: "entity_id", align: "left", label: "Proveedor",  field: "entity_id", sortable: true, format: (val, row) => suppliers.value.find(pm => pm.id === val)?.trade_name },
   { name: "iva_id", align: "left", label: "IVA",  field: "iva_id", sortable: true, format: (val, row) => ivas.value.find(i => i.id === val)?.percent+'%' },
-  { name: "store_id", align: "left", label: "Tienda",  field: "store_id", sortable: true },
+  { name: "store_id", align: "left", label: "Tienda",  field: "store_id", sortable: true, format: (val, row) => stores.value.find(s => s.id === val)?.name },
 ];
 
 const tableRef = ref()
