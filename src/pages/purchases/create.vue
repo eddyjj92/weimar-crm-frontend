@@ -7,7 +7,7 @@
       <q-card-section class="q-pt-xs q-px-none">
         <q-item class="q-py-xs">
           <q-item-section style="min-width: 25%">
-            <label for="">Proveedor</label>
+            <label for="" class="text-bold" style="font-size: 13px">Proveedor</label>
             <q-select
               outlined
               v-model="purchase.entity_id"
@@ -20,30 +20,32 @@
             />
           </q-item-section>
           <q-item-section>
-            <label for="">Factura</label>
+            <label for="" class="text-bold" style="font-size: 13px">Factura</label>
             <q-input outlined v-model="purchase.invoice" dense/>
           </q-item-section>
           <q-item-section>
+            <label for="" class="text-bold" style="font-size: 13px">Forma de Pago</label>
             <q-select
               outlined
               v-model="purchase.payment_shape"
               :options="payment_shapes"
               map-options
               emit-value
-              label="Forma de Pago"
               dense
             />
           </q-item-section>
           <q-item-section>
-            <q-input outlined v-model="purchase.term" label="Plazo" dense/>
+            <label for="" class="text-bold" style="font-size: 13px">Plazo</label>
+            <q-input outlined v-model="purchase.term" dense/>
           </q-item-section>
           <q-item-section>
-            <q-input outlined v-model="purchase.invoice_date" label="Fecha de Factura" type="date" dense/>
+            <label for="" class="text-bold" style="font-size: 13px">Fecha</label>
+            <q-input outlined v-model="purchase.invoice_date" type="date" dense/>
           </q-item-section>
         </q-item>
         <q-item class="q-py-xs">
           <q-item-section style="min-width: 25%">
-            <label for="">Producto</label>
+            <label for="" class="text-bold" style="font-size: 13px">Producto</label>
             <q-select
               outlined
               v-model="purchase.entity_id"
@@ -166,7 +168,7 @@
             <q-input outlined dense label="Abono"></q-input>
           </q-item-section>
           <q-item-section>
-            <q-btn outline icon="save" color="primary">Guardar</q-btn>
+            <q-btn outline icon="save" color="primary" dense>Guardar</q-btn>
           </q-item-section>
         </q-item>
       </q-card-section>
