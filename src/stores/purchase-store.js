@@ -11,13 +11,13 @@ const storeStore = useStoreStore();
 export const usePurchaseStore = defineStore('purchase', () => {
   let purchases = ref([]);
   let suppliers = ref([]);
-  let payment_methods = ref([]);
+  let payment_shapes = ref([]);
   let purchase_states = ref([]);
   let fetched = ref(false);
   (function construct(){
     purchases.value = JSON.parse(localStorage.getItem('purchases') ?? '[]');
     suppliers.value = JSON.parse(localStorage.getItem('suppliers') ?? '[]');
-    payment_methods.value = JSON.parse(localStorage.getItem('payment_methods') ?? '[]');
+    payment_shapes.value = JSON.parse(localStorage.getItem('payment_shapes') ?? '[]');
     purchase_states.value = JSON.parse(localStorage.getItem('purchase_states') ?? '[]');
   })();
 
@@ -32,13 +32,13 @@ export const usePurchaseStore = defineStore('purchase', () => {
         fetched.value = true;
         purchases.value = res.data.purchases;
         suppliers.value = res.data.suppliers;
-        payment_methods.value = res.data.payment_methods;
+        payment_shapes .value = res.data.payment_shapes ;
         purchase_states.value = res.data.purchase_states;
         ivaStore.ivas = res.data.ivas;
         storeStore.stores = res.data.stores;
         localStorage.setItem("purchases", JSON.stringify(purchases.value))
         localStorage.setItem("suppliers", JSON.stringify(suppliers.value))
-        localStorage.setItem("payment_methods", JSON.stringify(payment_methods.value))
+        localStorage.setItem("payment_shapes", JSON.stringify(payment_shapes.value))
         localStorage.setItem("purchase_states", JSON.stringify(purchase_states.value))
         localStorage.setItem("ivas", JSON.stringify(ivaStore.ivas))
         localStorage.setItem("stores", JSON.stringify(storeStore.stores))
@@ -196,7 +196,7 @@ export const usePurchaseStore = defineStore('purchase', () => {
   return {
     purchases,
     suppliers,
-    payment_methods,
+    payment_shapes,
     purchase_states,
     fetched,
     getPurchases,

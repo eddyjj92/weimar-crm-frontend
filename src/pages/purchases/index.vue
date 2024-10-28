@@ -67,6 +67,7 @@
               :key="col.name"
               :props="props"
               auto-width
+              :style="{ width: col.width + 'px' }"
             >
               <q-checkbox :disable="purchases.length === 0" class="float-left" v-if="col.label === 'ID'" v-model="checkAll"/>
               <span class="float-left text-bold" style="font-size: 11px" v-else>{{ col.label }}<br>
@@ -84,7 +85,7 @@
                   </template>
                 </q-input>
                 <q-select v-if="col.name === 'payment_method'" outlined dense
-                          :options="[{label: 'Todos', value: null}, ...payment_methods]"
+                          :options="[{label: 'Todos', value: null}, ...payment_shapes]"
                           v-model="filters.payment_method" style="min-width: 100px"
                           type="text" emit-value map-options
                 >
@@ -393,7 +394,7 @@ const $q = useQuasar();
 const authStore = useAuthStore();
 const {token, user} = storeToRefs(authStore);
 const purchaseStore = usePurchaseStore();
-const {purchases, suppliers, payment_methods, purchase_states} = storeToRefs(purchaseStore);
+const {purchases, suppliers, payment_shapes, purchase_states} = storeToRefs(purchaseStore);
 const ivaStore = useIvaStore();
 const {ivas} = storeToRefs(ivaStore);
 const storeStore = useStoreStore()
@@ -403,7 +404,7 @@ let loading = ref(false);
 const columns = [
   { name: "id", align: "left", label: "ID",  field: "id", sortable: true, },
   { name: "purchase_date", align: "left", label: "Fecha",  field: "purchase_date", sortable: true, format: (val, row) => date.formatDate(new Date(val), "DD/MM/YYYY"), },
-  { name: "payment_method", align: "left", label: "Método de Pago ",  field: "payment_method", sortable: true, format: (val, row) => payment_methods.value.find(pm => pm.value === val)?.label },
+  { name: "payment_shapes ", align: "left", label: "Forma de Pago ",  field: "payment_shapes ", sortable: true, format: (val, row) => payment_shapes.value.find(pm => pm.value === val)?.label },
   { name: "term", align: "left", label: "Plazo",  field: "term", sortable: true },
   { name: "invoice", align: "left", label: "Factura",  field: "invoice", sortable: true },
   { name: "invoice_date", align: "left", label: "Fecha Factura",  field: "invoice_date", sortable: true, format: (val, row) => date.formatDate(new Date(val), "DD/MM/YYYY"), },
@@ -553,3 +554,22 @@ const remove = async () => {
 }
 
 </script>
+<style scoped>
+.header-cell {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.resizer {
+  width: 5px;
+  height: 100%;
+  cursor: col-resize;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+</style>
