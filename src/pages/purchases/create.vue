@@ -56,32 +56,33 @@
               emit-value
               map-options
               dense
+              fill-input
             >
-            <template v-slot:option="props">
-              <div @click="purchase.item_id = props.opt.id; itemSelect.hidePopup()">
+              <template v-slot:before-options>
                 <q-markup-table separator="cell" flat bordered dense>
                   <thead>
-                    <tr class="bg-grey-4">
-                      <th class="text-left">Dessert (100g serving)</th>
-                      <th class="text-right">Calories</th>
-                      <th class="text-right">Fat (g)</th>
-                      <th class="text-right">Carbs (g)</th>
-                      <th class="text-right">Protein (g)</th>
-                      <th class="text-right">Sodium (mg)</th>
-                    </tr>
+                  <tr class="bg-grey-4">
+                    <th class="text-left" style="width: 120px">Producto</th>
+                    <th class="text-left" style="width: 200px">Descripción</th>
+                    <th class="text-left" style="width: 50px">% IVA</th>
+                    <th class="text-left" style="width: 50px">P. Compra</th>
+                    <th class="text-left" style="width: 50px">P. Venta</th>
+                  </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>{{ props.opt.name }}</td>
-                      <td>{{ props.opt.id }}</td>
-                      <td>{{ props.opt.iva_id }}</td>
-                      <td>{{ props.opt.id }}</td>
-                      <td>{{ props.opt.name }}</td>
+                  <template v-for="option in items" :key="option.id">
+                    <tr @click="purchase.item_id = option.id; itemSelect.hidePopup()">
+                      <td style="width: 120px">{{ option.name }}</td>
+                      <td style="width: 200px">{{ option.description }}</td>
+                      <td style="width: 50px">{{ option.iva_id }}</td>
+                      <td style="width: 50px">{{ option.price }}</td>
+                      <td style="width: 50px">{{ option.sell_price }}</td>
                     </tr>
+                  </template>
                   </tbody>
                 </q-markup-table>
-              </div>
-            </template>
+              </template>
+              <template v-slot:option></template>
             </q-select>
           </q-item-section>
           <q-item-section>
