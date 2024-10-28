@@ -50,13 +50,15 @@
               ref="itemSelect"
               outlined
               v-model="purchase.item_id"
-              :options="items"
+              :options="products"
               option-label="name"
               option-value="id"
               emit-value
               map-options
               dense
-              fill-input
+              use-input
+              @click="purchase.item_id = null"
+              @filter="productFilter"
             >
               <template v-slot:before-options>
                 <q-markup-table separator="cell" flat bordered dense>
@@ -70,7 +72,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <template v-for="option in items" :key="option.id">
+                  <template v-for="option in products" :key="option.id">
                     <tr @click="purchase.item_id = option.id; itemSelect.hidePopup()">
                       <td style="width: 120px">{{ option.name }}</td>
                       <td style="width: 200px">{{ option.description }}</td>
@@ -225,7 +227,8 @@ const {ivas} = storeToRefs(ivaStore);
 const itemStore = useItemStore()
 const {items} = storeToRefs(itemStore)
 
-let itemSelect= ref(null);
+let itemSelect = ref(null);
+let products = ref(items.value);
 let purchase = ref({
   details: []
 })
@@ -257,6 +260,23 @@ const register = async () => {
   if(await response){
     await $router.push({ path: '/purchases' })
   }
+}
+
+const productFilter  = (val, update) => {
+  if (val === '') {
+    update(() => {
+      products.value = items.value
+
+      // here you have access to "ref" which
+      // is the Vue reference of the QSelect
+    })
+    return
+  }
+
+  update(() => {
+    const needle = val.toLowerCase()
+    products.value = items.value.filter(v => v.name.toLowerCase().indexOf(needle) > -1 || v.description.toLowerCase().indexOf(needle) > -1)
+  })
 }
 </script>
 <style scoped>
