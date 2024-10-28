@@ -47,15 +47,42 @@
           <q-item-section style="min-width: 25%">
             <label for="" class="text-bold" style="font-size: 13px">Producto</label>
             <q-select
+              ref="itemSelect"
               outlined
-              v-model="purchase.entity_id"
-              :options="suppliers"
-              option-label="trade_name"
+              v-model="purchase.item_id"
+              :options="items"
+              option-label="name"
               option-value="id"
               emit-value
               map-options
               dense
-            />
+            >
+            <template v-slot:option="props">
+              <div @click="purchase.item_id = props.opt.id; itemSelect.hidePopup()">
+                <q-markup-table separator="cell" flat bordered dense>
+                  <thead>
+                    <tr class="bg-grey-4">
+                      <th class="text-left">Dessert (100g serving)</th>
+                      <th class="text-right">Calories</th>
+                      <th class="text-right">Fat (g)</th>
+                      <th class="text-right">Carbs (g)</th>
+                      <th class="text-right">Protein (g)</th>
+                      <th class="text-right">Sodium (mg)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ props.opt.name }}</td>
+                      <td>{{ props.opt.id }}</td>
+                      <td>{{ props.opt.iva_id }}</td>
+                      <td>{{ props.opt.id }}</td>
+                      <td>{{ props.opt.name }}</td>
+                    </tr>
+                  </tbody>
+                </q-markup-table>
+              </div>
+            </template>
+            </q-select>
           </q-item-section>
           <q-item-section>
             <q-item class="q-pa-none">
@@ -197,6 +224,7 @@ const {ivas} = storeToRefs(ivaStore);
 const itemStore = useItemStore()
 const {items} = storeToRefs(itemStore)
 
+let itemSelect= ref(null);
 let purchase = ref({
   details: []
 })
