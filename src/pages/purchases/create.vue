@@ -7,6 +7,7 @@
       <q-card-section class="q-pt-xs q-px-none">
         <q-item class="q-py-xs">
           <q-item-section style="min-width: 25%">
+            <label for="">Proveedor</label>
             <q-select
               outlined
               v-model="purchase.entity_id"
@@ -15,13 +16,12 @@
               option-value="id"
               emit-value
               map-options
-              label="Proveedor"
               dense
-              class="my-custom-select"
             />
           </q-item-section>
           <q-item-section>
-            <q-input outlined v-model="purchase.invoice" label="Factura" dense/>
+            <label for="">Factura</label>
+            <q-input outlined v-model="purchase.invoice" dense/>
           </q-item-section>
           <q-item-section>
             <q-select
@@ -43,6 +43,7 @@
         </q-item>
         <q-item class="q-py-xs">
           <q-item-section style="min-width: 25%">
+            <label for="">Producto</label>
             <q-select
               outlined
               v-model="purchase.entity_id"
@@ -51,7 +52,6 @@
               option-value="id"
               emit-value
               map-options
-              label="Producto"
               dense
             />
           </q-item-section>
@@ -245,7 +245,7 @@ const register = async () => {
 :deep(.input .q-field__marginal),
 :deep(.q-input .q-field__control),
 :deep(.q-input .q-field__marginal) {
-  height: 30px;
+  height: 32px;
   font-size: 11px;
 }
 
