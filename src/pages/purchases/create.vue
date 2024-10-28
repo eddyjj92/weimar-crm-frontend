@@ -1,13 +1,13 @@
 <template>
   <q-page class="q-pa-sm full-height row">
     <q-card class="flex-grow col-auto q-px-none" style="max-height: 180px">
-      <q-card-section class="full-width q-pb-xs">
+      <q-card-section class="full-width  q-pt-sm q-pb-xs">
         <span class="text-h6">Nueva Compra</span>
       </q-card-section>
-      <q-card-section class="q-pt-xs q-px-none">
+      <q-card-section class="q-pt-none q-px-none">
         <q-item class="q-py-xs">
           <q-item-section style="min-width: 25%">
-            <label for="" class="text-bold" style="font-size: 13px">Proveedor</label>
+            <label for="" class="text-bold" style="font-size: 12px">Proveedor</label>
             <q-select
               outlined
               v-model="purchase.entity_id"
@@ -20,11 +20,11 @@
             />
           </q-item-section>
           <q-item-section>
-            <label for="" class="text-bold" style="font-size: 13px">Factura</label>
+            <label for="" class="text-bold" style="font-size: 12px">Factura</label>
             <q-input outlined v-model="purchase.invoice" dense/>
           </q-item-section>
           <q-item-section>
-            <label for="" class="text-bold" style="font-size: 13px">Forma de Pago</label>
+            <label for="" class="text-bold" style="font-size: 12px">Forma de Pago</label>
             <q-select
               outlined
               v-model="purchase.payment_shape"
@@ -35,17 +35,17 @@
             />
           </q-item-section>
           <q-item-section>
-            <label for="" class="text-bold" style="font-size: 13px">Plazo</label>
+            <label for="" class="text-bold" style="font-size: 12px">Plazo</label>
             <q-input outlined v-model="purchase.term" dense/>
           </q-item-section>
           <q-item-section>
-            <label for="" class="text-bold" style="font-size: 13px">Fecha</label>
+            <label for="" class="text-bold" style="font-size: 12px">Fecha</label>
             <q-input outlined v-model="purchase.invoice_date" type="date" dense/>
           </q-item-section>
         </q-item>
         <q-item class="q-py-xs">
           <q-item-section style="min-width: 25%">
-            <label for="" class="text-bold" style="font-size: 13px">Producto</label>
+            <label for="" class="text-bold" style="font-size: 12px">Producto</label>
             <q-select
               ref="itemSelect"
               outlined
@@ -57,7 +57,7 @@
               map-options
               dense
               use-input
-              @click="purchase.item_id = null"
+              @click="purchase.item_id = null;purchase.color_id = null"
               @filter="productFilter"
             >
               <template v-slot:before-options>
@@ -87,55 +87,67 @@
               <template v-slot:option></template>
             </q-select>
           </q-item-section>
-          <q-item-section>
+          <q-item-section style="min-width: 14%">
             <q-item class="q-pa-none">
-              <q-item-section style="min-width: 65%">
+              <q-item-section style="min-width: 60%">
+                <label for="" class="text-bold" style="font-size: 12px">Color</label>
                 <q-select
                   outlined
-                  v-model="purchase.entity_id"
-                  :options="suppliers"
-                  option-label="trade_name"
+                  v-model="purchase.color_id"
+                  :options="items.find(i => i.id === purchase.item_id)?.colors"
+                  option-label="name"
                   option-value="id"
                   emit-value
                   map-options
-                  label="Color"
                   dense
                 />
               </q-item-section>
               <q-item-section>
-                <q-input outlined label="% IVA" dense/>
+                <label for="" class="text-bold" style="font-size: 12px">% IVA</label>
+                <q-input outlined dense/>
               </q-item-section>
             </q-item>
           </q-item-section>
           <q-item-section  style="min-width: 20%">
             <q-item class="q-pa-none">
               <q-item-section>
-                <q-input outlined label="Precio Compra" dense/>
+                <label for="" class="text-bold" style="font-size: 12px">Precio Compra</label>
+                <q-input outlined dense/>
               </q-item-section>
-              <q-item-section>
-                <q-input outlined label="Precio Venta + IVA" dense/>
+              <q-item-section style="min-width: 55%">
+                <label for="" class="text-bold" style="font-size: 12px">Precio Venta + IVA</label>
+                <q-input outlined dense/>
               </q-item-section>
             </q-item>
           </q-item-section>
-          <q-item-section style="min-width: 30%">
+          <q-item-section style="min-width: 28%">
             <q-item class="q-pa-none">
               <q-item-section>
-                <q-input outlined label="% Desc" dense/>
+                <label for="" class="text-bold" style="font-size: 12px">% Desc.</label>
+                <q-input outlined dense/>
               </q-item-section>
               <q-item-section style="min-width: 40%">
-                <q-input outlined  dense class="input-box"/>
+                <label for="" class="text-bold" style="font-size: 12px">Precio comp. final*</label>
+                <q-input outlined  dense/>
               </q-item-section>
-              <q-item-section style="min-width: 40%">
-                <q-input outlined dense class="input-box"/>
+              <q-item-section style="min-width: 38%">
+                <label for="" class="text-bold" style="font-size: 12px">Precio comp. + iva*</label>
+                <q-input outlined dense/>
               </q-item-section>
             </q-item>
           </q-item-section>
           <q-item-section>
             <q-item class="q-pa-none">
               <q-item-section>
-                <q-btn color="primary" icon="pan_tool_alt" dense></q-btn>
+                <q-btn color="primary" icon="pan_tool_alt" dense class="q-mt-md">
+                  <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
+                    <strong>Tallas</strong>
+                    (<q-icon name="keyboard_arrow_up"/>)
+                  </q-tooltip>
+                </q-btn>
               </q-item-section>
               <q-item-section>
+                <label for="" class="text-bold" style="font-size: 12px">Cantidad</label>
                 <q-input outlined dense class="input-box"/>
               </q-item-section>
             </q-item>
@@ -149,30 +161,36 @@
         <q-markup-table separator="cell" flat bordered dense>
           <thead>
             <tr class="bg-grey-4">
-              <th class="text-left">Dessert (100g serving)</th>
-              <th class="text-right">Calories</th>
-              <th class="text-right">Fat (g)</th>
-              <th class="text-right">Carbs (g)</th>
-              <th class="text-right">Protein (g)</th>
-              <th class="text-right">Sodium (mg)</th>
+              <th class="text-left">Producto</th>
+              <th class="text-right">Descripcion</th>
+              <th class="text-right">Talla</th>
+              <th class="text-right">Color</th>
+              <th class="text-right">%Iva</th>
+              <th class="text-right">P/Compra</th>
+              <th class="text-right">P/Venta</th>
+              <th class="text-right">% Desc</th>
+              <th class="text-right">P/Final</th>
+              <th class="text-right">P/Iva</th>
+              <th class="text-right">Cant</th>
+              <th class="text-right">Subtotal</th>
+              <th class="text-right">Eliminar</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="text-left">Frozen Yogurt</td>
-              <td class="text-right">159</td>
-              <td class="text-right">6</td>
-              <td class="text-right">24</td>
-              <td class="text-right">4</td>
-              <td class="text-right">87</td>
-            </tr>
-            <tr>
-              <td class="text-left">Frozen Yogurt</td>
-              <td class="text-right">159</td>
-              <td class="text-right">6</td>
-              <td class="text-right">24</td>
-              <td class="text-right">4</td>
-              <td class="text-right">87</td>
+            <tr v-for="(dt, i) in purchase.details" :key="i">
+              <td class="text-left">{{dt.item_id}}</td>
+              <td class="text-right">Descripcion</td>
+              <td class="text-right">Talla</td>
+              <td class="text-right">Color</td>
+              <td class="text-right">%Iva</td>
+              <td class="text-right">P/Compra</td>
+              <td class="text-right">P/Venta</td>
+              <td class="text-right">% Desc</td>
+              <td class="text-right">P/Final</td>
+              <td class="text-right">P/Iva</td>
+              <td class="text-right">Cant</td>
+              <td class="text-right">Subtotal</td>
+              <td class="text-right">Eliminar</td>
             </tr>
           </tbody>
         </q-markup-table>
@@ -195,7 +213,7 @@
             <q-input outlined dense label="Total"></q-input>
           </q-item-section>
           <q-item-section>
-            <q-input outlined dense label="Abono"></q-input>
+            <q-input outlined dense label="Valor abono"></q-input>
           </q-item-section>
           <q-item-section>
             <q-btn outline icon="save" color="primary" dense>Guardar</q-btn>
