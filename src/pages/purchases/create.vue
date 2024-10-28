@@ -1,12 +1,12 @@
 <template>
   <q-page class="q-pa-sm full-height row">
-    <q-card class="flex-grow col-auto" style="max-height: 180px">
+    <q-card class="flex-grow col-auto q-px-none" style="max-height: 180px">
       <q-card-section class="full-width q-pb-xs">
         <span class="text-h6">Nueva Compra</span>
       </q-card-section>
-      <q-card-section class="q-pt-xs">
+      <q-card-section class="q-pt-xs q-px-none">
         <q-item class="q-py-xs">
-          <q-item-section style="min-width: 30%">
+          <q-item-section style="min-width: 25%">
             <q-select
               outlined
               v-model="purchase.entity_id"
@@ -17,6 +17,7 @@
               map-options
               label="Proveedor"
               dense
+              class="my-custom-select"
             />
           </q-item-section>
           <q-item-section>
@@ -41,7 +42,7 @@
           </q-item-section>
         </q-item>
         <q-item class="q-py-xs">
-          <q-item-section style="min-width: 30%">
+          <q-item-section style="min-width: 25%">
             <q-select
               outlined
               v-model="purchase.entity_id"
@@ -55,26 +56,57 @@
             />
           </q-item-section>
           <q-item-section>
-            <q-select
-              outlined
-              v-model="purchase.entity_id"
-              :options="suppliers"
-              option-label="trade_name"
-              option-value="id"
-              emit-value
-              map-options
-              label="Color"
-              dense
-            />
+            <q-item class="q-pa-none">
+              <q-item-section style="min-width: 65%">
+                <q-select
+                  outlined
+                  v-model="purchase.entity_id"
+                  :options="suppliers"
+                  option-label="trade_name"
+                  option-value="id"
+                  emit-value
+                  map-options
+                  label="Color"
+                  dense
+                />
+              </q-item-section>
+              <q-item-section>
+                <q-input outlined label="% IVA" dense/>
+              </q-item-section>
+            </q-item>
+          </q-item-section>
+          <q-item-section  style="min-width: 20%">
+            <q-item class="q-pa-none">
+              <q-item-section>
+                <q-input outlined label="Precio Compra" dense/>
+              </q-item-section>
+              <q-item-section>
+                <q-input outlined label="Precio Venta + IVA" dense/>
+              </q-item-section>
+            </q-item>
+          </q-item-section>
+          <q-item-section style="min-width: 30%">
+            <q-item class="q-pa-none">
+              <q-item-section>
+                <q-input outlined label="% Desc" dense/>
+              </q-item-section>
+              <q-item-section style="min-width: 40%">
+                <q-input outlined  dense class="input-box"/>
+              </q-item-section>
+              <q-item-section style="min-width: 40%">
+                <q-input outlined dense class="input-box"/>
+              </q-item-section>
+            </q-item>
           </q-item-section>
           <q-item-section>
-
-          </q-item-section>
-          <q-item-section>
-
-          </q-item-section>
-          <q-item-section>
-
+            <q-item class="q-pa-none">
+              <q-item-section>
+                <q-btn color="primary" icon="pan_tool_alt" dense></q-btn>
+              </q-item-section>
+              <q-item-section>
+                <q-input outlined dense class="input-box"/>
+              </q-item-section>
+            </q-item>
           </q-item-section>
         </q-item>
       </q-card-section>
@@ -206,5 +238,47 @@ const register = async () => {
 .flex-grow {
   flex-grow: 1; /* Expande el elemento para ocupar el espacio disponible */
   overflow-y: auto; /* Añade un scrollbar si el contenido es muy grande */
+}
+
+/*Input*/
+:deep(.input .q-field__control),
+:deep(.input .q-field__marginal),
+:deep(.q-input .q-field__control),
+:deep(.q-input .q-field__marginal) {
+  height: 30px;
+  font-size: 11px;
+}
+
+/*Select*/
+:deep(.q-field--auto-height .q-field__control, ) {
+  min-height: 32px !important;
+  height: 32px !important;
+  font-size: 12px;
+}
+
+:deep(.q-field__label) {
+  font-size: 12px;
+  margin-top: -2px;
+}
+
+:deep(.q-field--auto-height .q-field__native, .q-field--auto-height
+.q-field__prefix,.q-field--auto-height .q-field__suffix ) {
+  height: 32px !important;
+  min-height: 32px !important;
+}
+
+:deep(.q-field__marginal) {
+  height: 32px !important;
+}
+
+:deep(.q-field--standard .q-field__control:before) {
+  border: 0px !important;
+  outline: none !important;
+  padding: 2px !important;
+}
+
+:deep(.q-field--auto-height .q-field__control-container) {
+  padding-bottom: 2px !important;
+  outline: none !important;
 }
 </style>
