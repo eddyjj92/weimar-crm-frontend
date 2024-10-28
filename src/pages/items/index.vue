@@ -3,7 +3,7 @@
     <q-card>
       <q-table
         ref="tableRef"
-        title="Artículos"
+        title="Productos"
         :rows="items"
         :hide-header="mode === 'grid'"
         :columns="columns"
@@ -11,9 +11,10 @@
         :grid="mode === 'grid'"
         :filter="filter"
         :pagination:sync="pagination"
+        class="my-sticky-last-column-table"
       >
         <template v-slot:top-right="props">
-          <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'crear artículos')" @click="dialog = true;" icon="add" outline color="primary" label="Registrar" class="q-mr-xs"/>
+          <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'crear productos')" @click="dialog = true;" icon="add" outline color="primary" label="Registrar" class="q-mr-xs"/>
 
           <q-input outlined dense debounce="300" v-model="filter" placeholder="Buscar">
             <template v-slot:append>
@@ -90,19 +91,19 @@
               <span v-if="col.field !== 'id' && col.field !== 'image' && col.field !== 'active'" class="float-left">{{ col.value }}</span>
             </q-td>
             <q-td auto-width align="center">
-              <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'editar artículos')" @click="edit(props.cols[0].value)" class="q-ml-sm bg-yellow-6 text-white" style="width: 35px">
+              <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'editar Productos')" @click="edit(props.cols[0].value)" class="q-ml-sm bg-yellow-6 text-white" style="width: 35px">
                 <q-icon size="xs" name="edit" />
                 <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   Editar item.
                 </q-tooltip>
               </q-btn>
-              <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'eliminar artículos')" @click="deleteDialogOpen(props.cols[0].value)" class="q-ml-sm bg-negative text-white" style="width: 35px">
+              <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'eliminar productos')" @click="deleteDialogOpen(props.cols[0].value)" class="q-ml-sm bg-negative text-white" style="width: 35px">
                 <q-icon size="xs" name="delete_forever" />
                 <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   Eliminar item.
                 </q-tooltip>
               </q-btn>
-              <template v-if="!(user?.roles[0]?.permissions.find(p => p.name === 'editar artículos' && user?.roles[0]?.permissions.find(p => p.name === 'eliminar artículos')))">
+              <template v-if="!(user?.roles[0]?.permissions.find(p => p.name === 'editar productos' && user?.roles[0]?.permissions.find(p => p.name === 'eliminar productos')))">
                 <span>-</span>
               </template>
             </q-td>
@@ -114,16 +115,16 @@
       </q-table>
     </q-card>
     <q-dialog v-model="dialog" persistent @before-hide="selected = []; item = {promotion: false, active: true}">
-      <q-card style="width: 600px; max-width: 80vw;">
+      <q-card style="width: 700px; max-width: 85vw;">
         <q-card-section>
           <div class="text-h6">
-            <span v-if="selected.length === 0"> Registrar Artículo</span>
-            <span v-else> Editar Artículo</span>
+            <span v-if="selected.length === 0"> Registrar Producto</span>
+            <span v-else> Editar Producto</span>
             <q-btn round flat dense icon="close" class="float-right" group="grey-8" v-close-popup></q-btn>
           </div>
         </q-card-section>
         <q-separator inset></q-separator>
-        <q-card-section style="max-height: 70vh" class="scroll">
+        <q-card-section style="max-height: 65vh" class="scroll">
           <q-form class="q-gutter-md">
             <q-list>
               <q-item>
@@ -155,6 +156,12 @@
                       </q-item>
                     </template>
                   </q-select>
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Descripción</q-item-label>
+                  <q-input dense outlined v-model="item.description" label="Descripción"/>
                 </q-item-section>
               </q-item>
               <q-item>
@@ -223,8 +230,12 @@
                   <q-input dense outlined v-model="item.max_profit_percent" label="% Ganancia Máxima"/>
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Precio</q-item-label>
-                  <q-input dense outlined v-model="item.price" label="Precio"/>
+                  <q-item-label class="q-pb-xs">Precio de Compra</q-item-label>
+                  <q-input dense outlined v-model="item.last_purchase_price" label="Precio de Compra"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="q-pb-xs">Precio de Venta</q-item-label>
+                  <q-input dense outlined v-model="item.last_sale_price" label="Precio de Venta"/>
                 </q-item-section>
               </q-item>
               <q-item>
@@ -274,12 +285,6 @@
                       <q-btn :disable="item.image === null || item.image === undefined" outlined unelevated icon="close" @click.stop.prevent="item.image = null" class="cursor-pointer" style="margin-right: -10px; width: 40px" />
                     </template>
                   </q-file>
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Descripción</q-item-label>
-                  <q-input type="textarea" dense outlined v-model="item.description" label="Descripción"/>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -337,7 +342,8 @@ const columns = [
   { name: "grupo", align: "left", label: "Grupo",  field: "group", sortable: true, format: (val, row) => `${val.name}`, },
   { name: "colors", align: "left", label: "Colores",  field: "colors", sortable: true, format: (val, row) => `${val.map(c => c.name)}`, },
   { name: "sizes", align: "left", label: "Tallas",  field: "sizes", sortable: true, format: (val, row) => `${val.map(c => c.name)}`, },
-  { name: "price", align: "left", label: "Precio",  field: "price", sortable: true, format: (val, row) => `$${val}`, },
+  { name: "last_purchase_price", align: "left", label: "Precio de Compra",  field: "last_purchase_price", sortable: true, format: (val, row) => `$${val}`, },
+  { name: "last_sale_price", align: "left", label: "Precio de Venta",  field: "last_sale_price", sortable: true, format: (val, row) => `$${val}`, },
   { name: "promotion", align: "left", label: "Promoción",  field: "promotion", sortable: true, format: (val, row) => val ? 'Si' : 'No', },
   { name: "active", align: "left", label: "Activo",  field: "active", sortable: true },
   { name: "iva", align: "left", label: "IVA",  field: "iva", sortable: true, format: (val, row) => `(${val.percent}) ${val.description}`, },

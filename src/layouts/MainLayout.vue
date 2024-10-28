@@ -185,9 +185,9 @@
               </q-item>
 
               <q-item
-                v-if="user?.roles[0].permissions.find(p => p.name === 'listar artículos')"
+                v-if="user?.roles[0].permissions.find(p => p.name === 'listar productos')"
                 active-class="tab-active"
-                @click="storePageDetails('Artículos', '/items', 'widgets')"
+                @click="storePageDetails('Productos', '/items', 'widgets')"
                 to="/items"
                 class="q-ma-sm navigation-item"
                 clickable
@@ -198,12 +198,12 @@
                 </q-item-section>
 
                 <q-item-section>
-                  Artículos
+                  Productos
                 </q-item-section>
               </q-item>
 
               <q-item
-                v-if="user?.roles[0].permissions.find(p => p.name === 'listar artículos')"
+                v-if="user?.roles[0].permissions.find(p => p.name === 'listar tiendas')"
                 active-class="tab-active"
                 @click="storePageDetails('Tiendas', '/stores', 'store')"
                 to="/stores"

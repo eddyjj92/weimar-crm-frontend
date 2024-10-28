@@ -36,7 +36,7 @@
           </q-item-section>
           <q-item-section>
             <label for="" class="text-bold" style="font-size: 12px">Plazo</label>
-            <q-input outlined v-model="purchase.term" dense/>
+            <q-input outlined v-model="purchase.term" dense :disabled="purchase.payment_shape === 1"/>
           </q-item-section>
           <q-item-section>
             <label for="" class="text-bold" style="font-size: 12px">Fecha</label>
@@ -49,7 +49,7 @@
             <q-select
               ref="itemSelect"
               outlined
-              v-model="purchase.item_id"
+              v-model="detailInProcess.item_id"
               :options="products"
               option-label="name"
               option-value="id"
@@ -57,7 +57,7 @@
               map-options
               dense
               use-input
-              @click="purchase.item_id = null;purchase.color_id = null"
+              @click="detailInProcess.item_id = null;detailInProcess.color_id = null; detailInProcess.iva = null"
               @filter="productFilter"
             >
               <template v-slot:before-options>
@@ -73,7 +73,7 @@
                   </thead>
                   <tbody>
                   <template v-for="option in products" :key="option.id">
-                    <tr @click="purchase.item_id = option.id; itemSelect.hidePopup()">
+                    <tr @click="detailInProcess.item_id = option.id; itemSelect.hidePopup();">
                       <td style="width: 120px">{{ option.name }}</td>
                       <td style="width: 200px">{{ option.description }}</td>
                       <td style="width: 50px">{{ option.iva_id }}</td>
@@ -93,7 +93,7 @@
                 <label for="" class="text-bold" style="font-size: 12px">Color</label>
                 <q-select
                   outlined
-                  v-model="purchase.color_id"
+                  v-model="detailInProcess.color_id"
                   :options="items.find(i => i.id === purchase.item_id)?.colors"
                   option-label="name"
                   option-value="id"
@@ -104,7 +104,7 @@
               </q-item-section>
               <q-item-section>
                 <label for="" class="text-bold" style="font-size: 12px">% IVA</label>
-                <q-input outlined dense/>
+                <q-input outlined dense v-model="detailInProcess.iva_percent"/>
               </q-item-section>
             </q-item>
           </q-item-section>
@@ -112,7 +112,7 @@
             <q-item class="q-pa-none">
               <q-item-section>
                 <label for="" class="text-bold" style="font-size: 12px">Precio Compra</label>
-                <q-input outlined dense/>
+                <q-input outlined dense v-model="detailInProcess.purchase_price"/>
               </q-item-section>
               <q-item-section style="min-width: 55%">
                 <label for="" class="text-bold" style="font-size: 12px">Precio Venta + IVA</label>
@@ -165,7 +165,7 @@
               <th class="text-right">Descripcion</th>
               <th class="text-right">Talla</th>
               <th class="text-right">Color</th>
-              <th class="text-right">%Iva</th>
+              <th class="text-right">% Iva</th>
               <th class="text-right">P/Compra</th>
               <th class="text-right">P/Venta</th>
               <th class="text-right">% Desc</th>
@@ -182,7 +182,7 @@
               <td class="text-right">Descripcion</td>
               <td class="text-right">Talla</td>
               <td class="text-right">Color</td>
-              <td class="text-right">%Iva</td>
+              <td class="text-right">% Iva</td>
               <td class="text-right">P/Compra</td>
               <td class="text-right">P/Venta</td>
               <td class="text-right">% Desc</td>
@@ -226,7 +226,7 @@
 
 <script setup>
 import {useQuasar} from "quasar";
-import {onMounted, ref} from 'vue'
+import {computed, onMounted, reactive, ref, watch} from 'vue'
 import {storeToRefs} from "pinia";
 import {useAuthStore} from "stores/auth-store";
 import {usePurchaseStore} from "stores/purchase-store.js";
@@ -251,10 +251,20 @@ let purchase = ref({
   details: []
 })
 
+let detailInProcess = reactive({
+  item_id: null,
+  color_id: null,
+  iva_percent: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.iva.percent),
+  purchase_price: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.price),
+  sell_price: null,
+  percent_discount: 0,
+  size_id: null,
+  units: 0,
+})
+
 onMounted(async () => {
   await itemStore.getItems(token.value, null,!itemStore.fetched)
 })
-
 
 const addDetail = () => {
   purchase.value.details.push({
