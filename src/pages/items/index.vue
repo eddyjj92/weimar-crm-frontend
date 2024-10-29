@@ -91,16 +91,16 @@
               <span v-if="col.field !== 'id' && col.field !== 'image' && col.field !== 'active'" class="float-left">{{ col.value }}</span>
             </q-td>
             <q-td auto-width align="center">
-              <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'editar Productos')" @click="edit(props.cols[0].value)" class="q-ml-sm bg-yellow-6 text-white" style="width: 35px">
+              <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'editar productos')" @click="edit(props.cols[0].value)" class="q-ml-sm bg-yellow-6 text-white" style="width: 35px">
                 <q-icon size="xs" name="edit" />
                 <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
-                  Editar item.
+                  Editar Producto.
                 </q-tooltip>
               </q-btn>
               <q-btn v-if="user?.roles[0]?.permissions.find(p => p.name === 'eliminar productos')" @click="deleteDialogOpen(props.cols[0].value)" class="q-ml-sm bg-negative text-white" style="width: 35px">
                 <q-icon size="xs" name="delete_forever" />
                 <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
-                  Eliminar item.
+                  Eliminar Producto.
                 </q-tooltip>
               </q-btn>
               <template v-if="!(user?.roles[0]?.permissions.find(p => p.name === 'editar productos' && user?.roles[0]?.permissions.find(p => p.name === 'eliminar productos')))">

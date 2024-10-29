@@ -70,7 +70,7 @@
               map-options
               dense
               use-input
-              @click="detailInProcess.item_id = null;detailInProcess.color_id = null; detailInProcess.iva = null"
+              @click="detailInProcess.item_id = null;detailInProcess.color_id = null; detailInProcess.iva = null; detailInProcess.final_purchase_price = 0"
               @filter="productFilter"
             >
               <template v-slot:no-option>
@@ -93,7 +93,7 @@
                   </thead>
                   <tbody>
                   <template v-for="option in products" :key="option.id">
-                    <tr @click="detailInProcess.item_id = option.id;">
+                    <tr @click="detailInProcess.item_id = option.id;refs['detailInProcess.item_id'].hidePopup()">
                       <td style="width: 120px">{{ option.name }}</td>
                       <td style="width: 200px">{{ option.description }}</td>
                       <td style="width: 50px">{{ option.iva.percent }}%</td>
@@ -115,7 +115,7 @@
                   :ref="setInputRef('detailInProcess.color_id')"
                   outlined
                   v-model="detailInProcess.color_id"
-                  :options="items.find(i => i.id === purchase.item_id)?.colors "
+                  :options="items.find(i => i.id === detailInProcess.item_id)?.colors "
                   option-label="name"
                   option-value="id"
                   emit-value
@@ -151,7 +151,7 @@
               </q-item-section>
               <q-item-section style="min-width: 40%">
                 <label for="" class="text-bold" style="font-size: 12px">Precio comp. final*</label>
-                <q-input outlined  dense/>
+                <q-input outlined v-model="detailInProcess.final_purchase_price" dense/>
               </q-item-section>
               <q-item-section style="min-width: 38%">
                 <label for="" class="text-bold" style="font-size: 12px">Precio comp. + iva*</label>
@@ -162,7 +162,7 @@
           <q-item-section>
             <q-item class="q-pa-none">
               <q-item-section>
-                <q-btn color="primary" icon="pan_tool_alt" dense class="q-mt-md">
+                <q-btn @click="openSizesDialog" color="primary" icon="pan_tool_alt" dense class="q-mt-md">
                   <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                     <strong>Tallas</strong>
                     (<q-icon name="keyboard_arrow_up"/>)
@@ -256,6 +256,7 @@ import {usePurchaseStore} from "stores/purchase-store.js";
 import {useIvaStore} from "stores/iva-store.js";
 import {useItemStore} from "stores/item-store.js";
 import {useRouter} from "vue-router";
+import Swal from "sweetalert2";
 
 const $router = useRouter();
 const $q = useQuasar();
@@ -276,11 +277,11 @@ const focusNext = (index) => {
   setTimeout(() => {
     if (refs.value[index]) {
       refs.value[index].focus();
-    } else if (index === inputs.value.length) {
+    } else if (index === refs.value.length) {
       // Vuelve al primer campo si se supera el índice
       refs.value[0].focus();
     }
-  }, 200);
+  }, 100);
 };
 
 let products = ref(items.value);
@@ -294,9 +295,16 @@ let detailInProcess = reactive({
   iva_percent: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.iva.percent),
   purchase_price: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.last_purchase_price),
   sale_price: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.last_sale_price),
+  final_purchase_price: 0,
   discount_percent: 0,
   size_id: null,
   units: 0,
+})
+
+watch(detailInProcess, () => {
+  if (detailInProcess.item_id){
+    detailInProcess.final_purchase_price = detailInProcess.purchase_price - detailInProcess.purchase_price * detailInProcess.discount_percent/100
+  }
 })
 
 onMounted(async () => {
@@ -342,6 +350,22 @@ const productFilter  = (val, update) => {
     const needle = val.toLowerCase()
     products.value = items.value.filter(v => v.name.toLowerCase().indexOf(needle) > -1 || v.description.toLowerCase().indexOf(needle) > -1)
   })
+}
+
+const openSizesDialog = async () => {
+  let message = null;
+  if (!purchase.value.entity_id){
+    message = 'El campo proveedor es requerido';
+  }
+  if (message){
+    await Swal.fire({
+      title: 'Error de Validación!',
+      text: message,
+      icon: 'error',
+      confirmButtonText: 'Aceptar'
+    })
+    await focusNext('purchase.entity_id')
+  }
 }
 </script>
 <style scoped>
