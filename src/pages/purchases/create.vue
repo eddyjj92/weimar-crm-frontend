@@ -9,6 +9,7 @@
           <q-item-section style="min-width: 25%">
             <label for="" class="text-bold" style="font-size: 12px">Proveedor</label>
             <q-select
+              :ref="setInputRef('purchase.entity_id')"
               outlined
               v-model="purchase.entity_id"
               :options="suppliers"
@@ -17,37 +18,49 @@
               emit-value
               map-options
               dense
-            />
+              @keyup.enter="purchase.entity_id ? focusNext('purchase.invoice') : null"
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-italic text-grey">
+                    No existen proveedores.
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
           </q-item-section>
           <q-item-section>
             <label for="" class="text-bold" style="font-size: 12px">Factura</label>
-            <q-input outlined v-model="purchase.invoice" dense/>
+            <q-input :ref="setInputRef('purchase.invoice')" outlined v-model="purchase.invoice" dense @keyup.enter="purchase.invoice ? focusNext('purchase.payment_shape') : null"/>
           </q-item-section>
           <q-item-section>
             <label for="" class="text-bold" style="font-size: 12px">Forma de Pago</label>
             <q-select
+              :ref="setInputRef('purchase.payment_shape')"
               outlined
               v-model="purchase.payment_shape"
               :options="payment_shapes"
               map-options
               emit-value
               dense
+              @keyup.enter="purchase.payment_shape ? focusNext('purchase.term') : null"
+              @update:model-value="purchase.payment_shape ? focusNext('purchase.term') : null"
             />
           </q-item-section>
           <q-item-section>
             <label for="" class="text-bold" style="font-size: 12px">Plazo</label>
-            <q-input outlined v-model="purchase.term" dense :disabled="purchase.payment_shape === 1"/>
+            <q-input :ref="setInputRef('purchase.term')" outlined v-model="purchase.term" dense :disabled="purchase.payment_shape === 1"/>
           </q-item-section>
           <q-item-section>
             <label for="" class="text-bold" style="font-size: 12px">Fecha</label>
-            <q-input outlined v-model="purchase.invoice_date" type="date" dense/>
+            <q-input :ref="setInputRef('purchase.invoice_date')" outlined v-model="purchase.invoice_date" type="date" dense/>
           </q-item-section>
         </q-item>
         <q-item class="q-py-xs">
           <q-item-section style="min-width: 25%">
             <label for="" class="text-bold" style="font-size: 12px">Producto</label>
             <q-select
-              ref="itemSelect"
+              :ref="setInputRef('detailInProcess.item_id')"
               outlined
               v-model="detailInProcess.item_id"
               :options="products"
@@ -60,6 +73,13 @@
               @click="detailInProcess.item_id = null;detailInProcess.color_id = null; detailInProcess.iva = null"
               @filter="productFilter"
             >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-italic text-grey">
+                    No existen proveedores.
+                  </q-item-section>
+                </q-item>
+              </template>
               <template v-slot:before-options>
                 <q-markup-table separator="cell" flat bordered dense>
                   <thead>
@@ -73,12 +93,12 @@
                   </thead>
                   <tbody>
                   <template v-for="option in products" :key="option.id">
-                    <tr @click="detailInProcess.item_id = option.id; itemSelect.hidePopup();">
+                    <tr @click="detailInProcess.item_id = option.id;">
                       <td style="width: 120px">{{ option.name }}</td>
                       <td style="width: 200px">{{ option.description }}</td>
-                      <td style="width: 50px">{{ option.iva_id }}</td>
-                      <td style="width: 50px">{{ option.price }}</td>
-                      <td style="width: 50px">{{ option.sell_price }}</td>
+                      <td style="width: 50px">{{ option.iva.percent }}%</td>
+                      <td style="width: 50px">{{ option.last_purchase_price.toLocaleString('en', { style: 'currency', currency: 'USD' }) }}</td>
+                      <td style="width: 50px">{{ option.last_sale_price.toLocaleString('en', { style: 'currency', currency: 'USD' }) }}</td>
                     </tr>
                   </template>
                   </tbody>
@@ -92,19 +112,22 @@
               <q-item-section style="min-width: 60%">
                 <label for="" class="text-bold" style="font-size: 12px">Color</label>
                 <q-select
+                  :ref="setInputRef('detailInProcess.color_id')"
                   outlined
                   v-model="detailInProcess.color_id"
-                  :options="items.find(i => i.id === purchase.item_id)?.colors"
+                  :options="items.find(i => i.id === purchase.item_id)?.colors "
                   option-label="name"
                   option-value="id"
                   emit-value
                   map-options
                   dense
+                  :disable="!detailInProcess.item_id"
+                  :class="!detailInProcess.item_id ? 'bg-grey-3' : ''"
                 />
               </q-item-section>
               <q-item-section>
                 <label for="" class="text-bold" style="font-size: 12px">% IVA</label>
-                <q-input outlined dense v-model="detailInProcess.iva_percent"/>
+                <q-input outlined dense v-model="detailInProcess.iva_percent" :disable="!detailInProcess.item_id" :class="!detailInProcess.item_id ? 'bg-grey-3' : ''"/>
               </q-item-section>
             </q-item>
           </q-item-section>
@@ -112,11 +135,11 @@
             <q-item class="q-pa-none">
               <q-item-section>
                 <label for="" class="text-bold" style="font-size: 12px">Precio Compra</label>
-                <q-input outlined dense v-model="detailInProcess.purchase_price"/>
+                <q-input outlined dense v-model="detailInProcess.purchase_price" :disable="!detailInProcess.item_id" :class="!detailInProcess.item_id ? 'bg-grey-3' : ''"/>
               </q-item-section>
               <q-item-section style="min-width: 55%">
                 <label for="" class="text-bold" style="font-size: 12px">Precio Venta + IVA</label>
-                <q-input outlined dense/>
+                <q-input outlined dense v-model="detailInProcess.sale_price" :disable="!detailInProcess.item_id" :class="!detailInProcess.item_id ? 'bg-grey-3' : ''"/>
               </q-item-section>
             </q-item>
           </q-item-section>
@@ -124,7 +147,7 @@
             <q-item class="q-pa-none">
               <q-item-section>
                 <label for="" class="text-bold" style="font-size: 12px">% Desc.</label>
-                <q-input outlined dense/>
+                <q-input outlined dense v-model="detailInProcess.discount_percent"/>
               </q-item-section>
               <q-item-section style="min-width: 40%">
                 <label for="" class="text-bold" style="font-size: 12px">Precio comp. final*</label>
@@ -245,7 +268,21 @@ const {ivas} = storeToRefs(ivaStore);
 const itemStore = useItemStore()
 const {items} = storeToRefs(itemStore)
 
-let itemSelect = ref(null);
+const refs = ref([]);
+const setInputRef = (index) => (el) => {
+  refs.value[index] = el; // Almacena la referencia en el arreglo
+};
+const focusNext = (index) => {
+  setTimeout(() => {
+    if (refs.value[index]) {
+      refs.value[index].focus();
+    } else if (index === inputs.value.length) {
+      // Vuelve al primer campo si se supera el índice
+      refs.value[0].focus();
+    }
+  }, 200);
+};
+
 let products = ref(items.value);
 let purchase = ref({
   details: []
@@ -255,9 +292,9 @@ let detailInProcess = reactive({
   item_id: null,
   color_id: null,
   iva_percent: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.iva.percent),
-  purchase_price: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.price),
-  sell_price: null,
-  percent_discount: 0,
+  purchase_price: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.last_purchase_price),
+  sale_price: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.last_sale_price),
+  discount_percent: 0,
   size_id: null,
   units: 0,
 })
@@ -272,7 +309,7 @@ const addDetail = () => {
     color_id: null,
     size_id: null,
     purchase_price: null,
-    sell_price: null,
+    sale_price: null,
     percent_discount: 0,
     units: 1,
   });

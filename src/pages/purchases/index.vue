@@ -84,9 +84,9 @@
                     </q-icon>
                   </template>
                 </q-input>
-                <q-select v-if="col.name === 'payment_method'" outlined dense
+                <q-select v-if="col.name === 'payment_shape'" outlined dense
                           :options="[{label: 'Todos', value: null}, ...payment_shapes]"
-                          v-model="filters.payment_method" style="min-width: 100px"
+                          v-model="filters.payment_shape" style="min-width: 100px"
                           type="text" emit-value map-options
                 >
                   <template v-slot:selected-item="{ opt }">
@@ -404,7 +404,7 @@ let loading = ref(false);
 const columns = [
   { name: "id", align: "left", label: "ID",  field: "id", sortable: true, },
   { name: "purchase_date", align: "left", label: "Fecha",  field: "purchase_date", sortable: true, format: (val, row) => date.formatDate(new Date(val), "DD/MM/YYYY"), },
-  { name: "payment_shapes ", align: "left", label: "Forma de Pago ",  field: "payment_shapes ", sortable: true, format: (val, row) => payment_shapes.value.find(pm => pm.value === val)?.label },
+  { name: "payment_shape", align: "left", label: "Forma de Pago ",  field: "payment_shape", sortable: true, format: (val, row) => payment_shapes.value.find(pm => pm.value === val)?.label },
   { name: "term", align: "left", label: "Plazo",  field: "term", sortable: true },
   { name: "invoice", align: "left", label: "Factura",  field: "invoice", sortable: true },
   { name: "invoice_date", align: "left", label: "Fecha Factura",  field: "invoice_date", sortable: true, format: (val, row) => date.formatDate(new Date(val), "DD/MM/YYYY"), },
@@ -423,7 +423,7 @@ const tableRef = ref()
 const selected = ref([])
 let filter = ref("")
 let filters = reactive({
-  payment_method:null,
+  payment_shape:null,
   state: null,
   entity_id: null,
   iva_id: null,
