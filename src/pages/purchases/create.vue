@@ -328,7 +328,7 @@ let detailInProcess = reactive({
   sale_price: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.last_sale_price),
   final_purchase_price: 0,
   discount_percent: 0,
-  purchase_price_plus_iva: computed(() => detailInProcess.purchase_price + detailInProcess.purchase_price * detailInProcess.iva_percent / 100),
+  purchase_price_plus_iva: 0,
   size_id: null,
   units: 0,
 })
@@ -336,6 +336,7 @@ let detailInProcess = reactive({
 watch(detailInProcess, () => {
   if (detailInProcess.item_id){
     detailInProcess.final_purchase_price = detailInProcess.purchase_price - detailInProcess.purchase_price * detailInProcess.discount_percent/100
+    detailInProcess.purchase_price_plus_iva = detailInProcess.purchase_price + detailInProcess.purchase_price * detailInProcess.iva_percent / 100
   }
 
   sizesDetails.value = items.value.find(it => it.id === detailInProcess.item_id)?.sizes.map((valor) => ({
