@@ -254,15 +254,15 @@
       </q-card-section>
       <q-card-section>
         <q-list bordered separator dense>
-          <q-item v-for="(size, i) in items.find(it => it.id === detailInProcess.item_id).sizes" :key="i" clickable v-ripple>
-            <q-item-section>{{size.name}}</q-item-section>
+          <q-item v-for="(size, i) in sizesDetails" :key="i" clickable v-ripple>
+            <q-item-section>{{size.size.name}}</q-item-section>
             <q-item-section side>
-              <q-input outlined style="width: 160px" class="q-pa-xs">
+              <q-input v-model="size.value" type="number" outlined style="width: 160px" class="q-pa-xs">
                 <template v-slot:before>
-                  <q-btn color="negative" icon="add" dense style="width: 30px;height: 30px"></q-btn>
+                  <q-btn @click="size.value !== 0 ? size.value-- : null" color="negative" icon="add" dense style="width: 30px;height: 30px"></q-btn>
                 </template>
                 <template v-slot:after>
-                  <q-btn color="positive" icon="add" dense style="width: 30px;height: 30px"></q-btn>
+                  <q-btn @click="size.value++" color="positive" icon="add" dense style="width: 30px;height: 30px"></q-btn>
                 </template>
               </q-input>
             </q-item-section>
@@ -315,6 +315,7 @@ const focusNext = (index) => {
 };
 
 let products = ref(items.value);
+let sizesDetails = ref([]);
 let purchase = ref({
   details: []
 })
@@ -336,6 +337,11 @@ watch(detailInProcess, () => {
   if (detailInProcess.item_id){
     detailInProcess.final_purchase_price = detailInProcess.purchase_price - detailInProcess.purchase_price * detailInProcess.discount_percent/100
   }
+
+  sizesDetails.value = items.value.find(it => it.id === detailInProcess.item_id)?.sizes.map((valor) => ({
+    size: valor,
+    value: 0
+  }));
 })
 
 onMounted(async () => {
