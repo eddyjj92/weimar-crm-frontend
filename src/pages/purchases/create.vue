@@ -49,7 +49,7 @@
           </q-item-section>
           <q-item-section>
             <label for="" class="text-bold" style="font-size: 12px">Plazo</label>
-            <q-input :ref="setInputRef('purchase.term')" outlined v-model="purchase.term" dense :disabled="purchase.payment_shape === 1"/>
+            <q-input :ref="setInputRef('purchase.term')" outlined v-model="purchase.term" dense :disable="purchase.payment_shape === 1"/>
           </q-item-section>
           <q-item-section>
             <label for="" class="text-bold" style="font-size: 12px">Fecha</label>
@@ -155,7 +155,7 @@
               </q-item-section>
               <q-item-section style="min-width: 38%">
                 <label for="" class="text-bold" style="font-size: 12px">Precio comp. + iva*</label>
-                <q-input outlined dense/>
+                <q-input v-model="detailInProcess.purchase_price_plus_iva" outlined dense/>
               </q-item-section>
             </q-item>
           </q-item-section>
@@ -297,6 +297,7 @@ let detailInProcess = reactive({
   sale_price: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.last_sale_price),
   final_purchase_price: 0,
   discount_percent: 0,
+  purchase_price_plus_iva: computed(() => detailInProcess.purchase_price + detailInProcess.purchase_price * detailInProcess.iva_percent / 100),
   size_id: null,
   units: 0,
 })
