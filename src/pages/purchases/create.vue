@@ -245,6 +245,36 @@
       </q-card-section>
     </q-card>
   </q-page>
+  <q-dialog v-model="sizesDialog" persistent>
+    <q-card style="width: 280px">
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">Tallas</div>
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
+      <q-card-section>
+        <q-list bordered separator dense>
+          <q-item v-for="(size, i) in items.find(it => it.id === detailInProcess.item_id).sizes" :key="i" clickable v-ripple>
+            <q-item-section>{{size.name}}</q-item-section>
+            <q-item-section side>
+              <q-input outlined style="width: 160px" class="q-pa-xs">
+                <template v-slot:before>
+                  <q-btn color="negative" icon="add" dense style="width: 30px;height: 30px"></q-btn>
+                </template>
+                <template v-slot:after>
+                  <q-btn color="positive" icon="add" dense style="width: 30px;height: 30px"></q-btn>
+                </template>
+              </q-input>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="Cancelar" color="grey" v-close-popup />
+        <q-btn flat label="Confirmar" color="primary" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup>
@@ -353,6 +383,7 @@ const productFilter  = (val, update) => {
   })
 }
 
+let sizesDialog = ref(false)
 const openSizesDialog = async () => {
   let message = null;
   if (!purchase.value.entity_id){
@@ -366,6 +397,8 @@ const openSizesDialog = async () => {
       confirmButtonText: 'Aceptar'
     })
     await focusNext('purchase.entity_id')
+  }else{
+    sizesDialog.value = true;
   }
 }
 </script>
