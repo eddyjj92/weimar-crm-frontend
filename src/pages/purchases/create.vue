@@ -203,8 +203,8 @@
             <tr v-for="(dt, i) in purchase.details" :key="i">
               <td class="text-left">{{items.find(p => p.id === dt.item_id).name}}</td>
               <td class="text-right">{{items.find(p => p.id === dt.item_id).description}}</td>
-              <td class="text-right">Talla</td>
-              <td class="text-right">Color</td>
+              <td class="text-right">{{sizes.find(s => s.id === dt.size_id)?.name}}</td>
+              <td class="text-right">{{colors.find(c => c.id === dt.color_id)?.name}}</td>
               <td class="text-right">% Iva</td>
               <td class="text-right">P/Compra</td>
               <td class="text-right">P/Venta</td>
@@ -279,7 +279,7 @@
 
 <script setup>
 import {useQuasar} from "quasar";
-import {computed, onMounted, reactive, ref, watch} from 'vue'
+import {computed, onMounted, reactive, ref, toRaw, watch} from 'vue'
 import {storeToRefs} from "pinia";
 import {useAuthStore} from "stores/auth-store";
 import {usePurchaseStore} from "stores/purchase-store.js";
@@ -287,6 +287,8 @@ import {useIvaStore} from "stores/iva-store.js";
 import {useItemStore} from "stores/item-store.js";
 import {useRouter} from "vue-router";
 import Swal from "sweetalert2";
+import {useSizeStore} from "stores/size-store.js";
+import {useColorStore} from "stores/color-store.js";
 
 const $router = useRouter();
 const $q = useQuasar();
@@ -298,6 +300,10 @@ const ivaStore = useIvaStore();
 const {ivas} = storeToRefs(ivaStore);
 const itemStore = useItemStore()
 const {items} = storeToRefs(itemStore)
+const sizeStore = useSizeStore()
+const {sizes} = storeToRefs(sizeStore)
+const colorStore = useColorStore()
+const {colors} = storeToRefs(colorStore)
 
 const refs = ref([]);
 const setInputRef = (index) => (el) => {
@@ -323,13 +329,13 @@ let purchase = ref({
 let detailInProcess = reactive({
   item_id: null,
   color_id: null,
+  size_id: null,
   iva_percent: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.iva.percent),
   purchase_price: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.last_purchase_price),
   sale_price: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.last_sale_price),
   final_purchase_price: 0,
   discount_percent: 0,
   purchase_price_plus_iva: 0,
-  size_id: null,
   units: computed(() => purchase.value.details.length),
 })
 
@@ -353,7 +359,10 @@ const addDetails = () => {
   sizesDetails.value.forEach(el => {
     for (let i = 0; i < el.units; i++){
       purchase.value.details.push({
-        item_id: detailInProcess.item_id
+        item_id: detailInProcess.item_id,
+        color_id: detailInProcess.color_id,
+        size_id: el.size.id,
+        iva_percent: detailInProcess.iva_percent,
       })
     }
   })
