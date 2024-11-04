@@ -208,11 +208,11 @@
               <td class="text-right">{{ivas.find(el => el.id === dt.color_id)?.percent}}%</td>
               <td class="text-right">${{dt.purchase_price}}</td>
               <td class="text-right">${{dt.sale_price}}</td>
-              <td class="text-right">% Desc</td>
-              <td class="text-right">P/Final</td>
-              <td class="text-right">P/Iva</td>
-              <td class="text-right">Cant</td>
-              <td class="text-right">Subtotal</td>
+              <td class="text-right">{{dt.discount_percent}}</td>
+              <td class="text-right">{{dt.final_purchase_price}}</td>
+              <td class="text-right">{{dt.purchase_price_plus_iva}}</td>
+              <td class="text-right">{{dt.units}}</td>
+              <td class="text-right">{{dt.subtotal}}</td>
               <td class="text-right">Eliminar</td>
             </tr>
           </tbody>
@@ -358,16 +358,21 @@ onMounted(async () => {
 
 const addDetails = () => {
   sizesDetails.value.forEach(el => {
-    alert(JSON.stringify())
-    purchase.value.details.push({
-      item_id: detailInProcess.item_id,
-      color_id: detailInProcess.color_id,
-      size_id: el.size.id,
-      iva_percent: detailInProcess.iva_percent,
-      purchase_price: detailInProcess.purchase_price,
-      sale_price: detailInProcess.sale_price,
-      units: el.units
-    })
+    if (el.units > 0){
+      purchase.value.details.push({
+        item_id: detailInProcess.item_id,
+        color_id: detailInProcess.color_id,
+        size_id: el.size.id,
+        iva_percent: detailInProcess.iva_percent,
+        purchase_price: detailInProcess.purchase_price,
+        sale_price: detailInProcess.sale_price,
+        final_purchase_price: detailInProcess.final_purchase_price,
+        discount_percent: detailInProcess.discount_percent,
+        purchase_price_plus_iva: detailInProcess.purchase_price_plus_iva,
+        units: el.units,
+        subtotal: computed(() => el.units * detailInProcess.purchase_price),
+      })
+    }
   })
 }
 
