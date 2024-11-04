@@ -201,11 +201,11 @@
           </thead>
           <tbody>
             <tr v-for="(dt, i) in purchase.details" :key="i">
-              <td class="text-left">{{items.find(p => p.id === dt.item_id).name}}</td>
-              <td class="text-right">{{items.find(p => p.id === dt.item_id).description}}</td>
-              <td class="text-right">{{sizes.find(s => s.id === dt.size_id)?.name}}</td>
-              <td class="text-right">{{colors.find(c => c.id === dt.color_id)?.name}}</td>
-              <td class="text-right">% Iva</td>
+              <td class="text-left">{{items.find(el => el.id === dt.item_id).name}}</td>
+              <td class="text-right">{{items.find(el => el.id === dt.item_id).description}}</td>
+              <td class="text-right">{{sizes.find(el => el.id === dt.size_id)?.name}}</td>
+              <td class="text-right">{{colors.find(el => el.id === dt.color_id)?.name}}</td>
+              <td class="text-right">{{ivas.find(el => el.id === dt.color_id)?.percent}}%</td>
               <td class="text-right">P/Compra</td>
               <td class="text-right">P/Venta</td>
               <td class="text-right">% Desc</td>
