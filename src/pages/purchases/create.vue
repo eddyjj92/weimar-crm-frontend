@@ -147,15 +147,15 @@
             <q-item class="q-pa-none">
               <q-item-section>
                 <label for="" class="text-bold" style="font-size: 12px">% Desc.</label>
-                <q-input outlined dense v-model="detailInProcess.discount_percent"/>
+                <q-input v-model="detailInProcess.discount_percent" outlined dense :disable="!detailInProcess.item_id" :class="!detailInProcess.item_id ? 'bg-grey-3' : ''"/>
               </q-item-section>
               <q-item-section style="min-width: 40%">
                 <label for="" class="text-bold" style="font-size: 12px">Precio comp. final*</label>
-                <q-input outlined v-model="detailInProcess.final_purchase_price" dense/>
+                <q-input v-model="detailInProcess.final_purchase_price" outlined dense :disable="!detailInProcess.item_id" :class="!detailInProcess.item_id ? 'bg-grey-3' : ''"/>
               </q-item-section>
               <q-item-section style="min-width: 38%">
                 <label for="" class="text-bold" style="font-size: 12px">Precio comp. + iva*</label>
-                <q-input v-model="detailInProcess.purchase_price_plus_iva" outlined dense/>
+                <q-input v-model="detailInProcess.purchase_price_plus_iva" outlined dense :disable="!detailInProcess.item_id" :class="!detailInProcess.item_id ? 'bg-grey-3' : ''"/>
               </q-item-section>
             </q-item>
           </q-item-section>
@@ -171,7 +171,7 @@
               </q-item-section>
               <q-item-section>
                 <label for="" class="text-bold" style="font-size: 12px">Cantidad</label>
-                <q-input outlined dense class="input-box"/>
+                <q-input v-model="detailInProcess.units" outlined dense class="input-box" readonly/>
               </q-item-section>
             </q-item>
           </q-item-section>
@@ -201,8 +201,8 @@
           </thead>
           <tbody>
             <tr v-for="(dt, i) in purchase.details" :key="i">
-              <td class="text-left">{{dt.item_id}}</td>
-              <td class="text-right">Descripcion</td>
+              <td class="text-left">{{items.find(p => p.id === dt.item_id).name}}</td>
+              <td class="text-right">{{items.find(p => p.id === dt.item_id).description}}</td>
               <td class="text-right">Talla</td>
               <td class="text-right">Color</td>
               <td class="text-right">% Iva</td>
@@ -257,12 +257,12 @@
           <q-item v-for="(size, i) in sizesDetails" :key="i" clickable v-ripple>
             <q-item-section>{{size.size.name}}</q-item-section>
             <q-item-section side>
-              <q-input v-model="size.value" type="number" outlined style="width: 160px" class="q-pa-xs">
+              <q-input v-model="size.units" type="number" outlined style="width: 160px" class="q-pa-xs">
                 <template v-slot:before>
-                  <q-btn @click="size.value !== 0 ? size.value-- : null" color="negative" icon="add" dense style="width: 30px;height: 30px"></q-btn>
+                  <q-btn @click="size.units !== 0 ? size.value-- : null" color="negative" icon="remove" dense style="width: 30px;height: 30px"></q-btn>
                 </template>
                 <template v-slot:after>
-                  <q-btn @click="size.value++" color="positive" icon="add" dense style="width: 30px;height: 30px"></q-btn>
+                  <q-btn @click="size.units++" color="positive" icon="add" dense style="width: 30px;height: 30px"></q-btn>
                 </template>
               </q-input>
             </q-item-section>
@@ -271,7 +271,7 @@
       </q-card-section>
       <q-card-actions align="right">
         <q-btn flat label="Cancelar" color="grey" v-close-popup />
-        <q-btn flat label="Confirmar" color="primary" v-close-popup />
+        <q-btn @click="addDetails" flat label="Confirmar" color="primary" v-close-popup />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -330,7 +330,7 @@ let detailInProcess = reactive({
   discount_percent: 0,
   purchase_price_plus_iva: 0,
   size_id: null,
-  units: 0,
+  units: computed(() => purchase.value.details.length),
 })
 
 watch(detailInProcess, () => {
@@ -341,7 +341,7 @@ watch(detailInProcess, () => {
 
   sizesDetails.value = items.value.find(it => it.id === detailInProcess.item_id)?.sizes.map((valor) => ({
     size: valor,
-    value: 0
+    units: 0
   }));
 })
 
@@ -349,16 +349,14 @@ onMounted(async () => {
   await itemStore.getItems(token.value, null,!itemStore.fetched)
 })
 
-const addDetail = () => {
-  purchase.value.details.push({
-    item_id: null,
-    color_id: null,
-    size_id: null,
-    purchase_price: null,
-    sale_price: null,
-    percent_discount: 0,
-    units: 1,
-  });
+const addDetails = () => {
+  sizesDetails.value.forEach(el => {
+    for (let i = 0; i < el.units; i++){
+      purchase.value.details.push({
+        item_id: detailInProcess.item_id
+      })
+    }
+  })
 }
 
 const removeDetail = () => {
