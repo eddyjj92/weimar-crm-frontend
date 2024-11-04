@@ -213,7 +213,11 @@
               <td class="text-right">{{dt.purchase_price_plus_iva}}</td>
               <td class="text-right">{{dt.units}}</td>
               <td class="text-right">{{dt.subtotal}}</td>
-              <td class="text-right">Eliminar</td>
+              <td class="text-right">
+                <q-btn dense color="negative" style="width: 25px; height: 25px">
+                  <q-icon dense size="xs" name="delete_forever"></q-icon>
+                </q-btn>
+              </td>
             </tr>
           </tbody>
         </q-markup-table>
