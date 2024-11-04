@@ -206,8 +206,8 @@
               <td class="text-right">{{sizes.find(el => el.id === dt.size_id)?.name}}</td>
               <td class="text-right">{{colors.find(el => el.id === dt.color_id)?.name}}</td>
               <td class="text-right">{{ivas.find(el => el.id === dt.color_id)?.percent}}%</td>
-              <td class="text-right">P/Compra</td>
-              <td class="text-right">P/Venta</td>
+              <td class="text-right">${{dt.purchase_price}}</td>
+              <td class="text-right">${{dt.sale_price}}</td>
               <td class="text-right">% Desc</td>
               <td class="text-right">P/Final</td>
               <td class="text-right">P/Iva</td>
@@ -336,7 +336,8 @@ let detailInProcess = reactive({
   final_purchase_price: 0,
   discount_percent: 0,
   purchase_price_plus_iva: 0,
-  units: computed(() => purchase.value.details.length),
+  units: computed(() => purchase.value.details.reduce((total, el) => total + el.units, 0)
+  ),
 })
 
 watch(detailInProcess, () => {
@@ -357,14 +358,16 @@ onMounted(async () => {
 
 const addDetails = () => {
   sizesDetails.value.forEach(el => {
-    for (let i = 0; i < el.units; i++){
-      purchase.value.details.push({
-        item_id: detailInProcess.item_id,
-        color_id: detailInProcess.color_id,
-        size_id: el.size.id,
-        iva_percent: detailInProcess.iva_percent,
-      })
-    }
+    alert(JSON.stringify())
+    purchase.value.details.push({
+      item_id: detailInProcess.item_id,
+      color_id: detailInProcess.color_id,
+      size_id: el.size.id,
+      iva_percent: detailInProcess.iva_percent,
+      purchase_price: detailInProcess.purchase_price,
+      sale_price: detailInProcess.sale_price,
+      units: el.units
+    })
   })
 }
 
