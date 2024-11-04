@@ -208,11 +208,11 @@
               <td class="text-right">{{ivas.find(el => el.id === dt.color_id)?.percent}}%</td>
               <td class="text-right">${{dt.purchase_price}}</td>
               <td class="text-right">${{dt.sale_price}}</td>
-              <td class="text-right">{{dt.discount_percent}}</td>
-              <td class="text-right">{{dt.final_purchase_price}}</td>
-              <td class="text-right">{{dt.purchase_price_plus_iva}}</td>
+              <td class="text-right">{{dt.discount_percent}}%</td>
+              <td class="text-right">${{dt.final_purchase_price}}</td>
+              <td class="text-right">${{dt.purchase_price_plus_iva}}</td>
               <td class="text-right">{{dt.units}}</td>
-              <td class="text-right">{{dt.subtotal}}</td>
+              <td class="text-right">${{dt.subtotal}}</td>
               <td class="text-right">
                 <q-btn dense color="negative" style="width: 25px; height: 25px">
                   <q-icon dense size="xs" name="delete_forever"></q-icon>
@@ -228,13 +228,13 @@
       <q-card-section>
         <q-item>
           <q-item-section>
-            <q-input outlined dense label="Subtotal"></q-input>
+            <q-input v-model="purchase.subtotal" outlined dense label="Subtotal"></q-input>
           </q-item-section>
           <q-item-section>
-            <q-input outlined dense label="Descuento"></q-input>
+            <q-input v-model="purchase.discount" outlined dense label="Descuento"></q-input>
           </q-item-section>
           <q-item-section>
-            <q-input outlined dense label="IVA"></q-input>
+            <q-input v-model="purchase.iva_percent" outlined dense label="IVA"></q-input>
           </q-item-section>
           <q-item-section>
             <q-input outlined dense label="Total"></q-input>
@@ -327,6 +327,13 @@ const focusNext = (index) => {
 let products = ref(items.value);
 let sizesDetails = ref([]);
 let purchase = ref({
+  subtotal: computed(() => purchase.value.details.reduce((total, el) => total + el.subtotal, 0)),
+  discount: computed(() => purchase.value.details.reduce((total, el) => total + ((el.purchase_price - el.final_purchase_price) * el.units)  , 0)),
+  iva_percent: computed(() => {
+    const validIvas = purchase.value.details.filter(el => el.iva_percent !== 0);
+    const total = validIvas.reduce((sum, el) => sum + el.iva_percent, 0);
+    return validIvas.length > 0 ? total / validIvas.length : 0;
+  }),
   details: []
 })
 
@@ -340,8 +347,7 @@ let detailInProcess = reactive({
   final_purchase_price: 0,
   discount_percent: 0,
   purchase_price_plus_iva: 0,
-  units: computed(() => purchase.value.details.reduce((total, el) => total + el.units, 0)
-  ),
+  units: computed(() => purchase.value.details.reduce((total, el) => total + el.units, 0)),
 })
 
 watch(detailInProcess, () => {
