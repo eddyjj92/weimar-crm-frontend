@@ -402,6 +402,13 @@ const openSizesDialog = async () => {
   let message = null;
   if (!purchase.value.entity_id){
     message = 'El campo proveedor es requerido';
+    await focusNext('purchase.entity_id')
+  } else if (!detailInProcess.item_id){
+    message = 'El campo producto es requerido';
+    await focusNext('purchase.item_id')
+  } else if (!detailInProcess.color_id){
+    message = 'El campo color es requerido';
+    await focusNext('purchase.color_id')
   }
   if (message){
     await Swal.fire({
@@ -410,7 +417,6 @@ const openSizesDialog = async () => {
       icon: 'error',
       confirmButtonText: 'Aceptar'
     })
-    await focusNext('purchase.entity_id')
   }else{
     sizesDialog.value = true;
   }
