@@ -127,7 +127,7 @@
               </q-item-section>
               <q-item-section>
                 <label for="" class="text-bold" style="font-size: 12px">% IVA</label>
-                <q-input outlined dense v-model="detailInProcess.iva_percent" :disable="!detailInProcess.item_id" :class="!detailInProcess.item_id ? 'bg-grey-3' : ''"/>
+                <q-input outlined dense :model-value="ivas.find(el => el.id === detailInProcess.iva_id)?.percent" :disable="!detailInProcess.item_id" :class="!detailInProcess.item_id ? 'bg-grey-3' : ''"/>
               </q-item-section>
             </q-item>
           </q-item-section>
@@ -205,7 +205,7 @@
               <td class="text-right">{{items.find(el => el.id === dt.item_id).description}}</td>
               <td class="text-right">{{sizes.find(el => el.id === dt.size_id)?.name}}</td>
               <td class="text-right">{{colors.find(el => el.id === dt.color_id)?.name}}</td>
-              <td class="text-right">{{ivas.find(el => el.id === dt.color_id)?.percent}}%</td>
+              <td class="text-right">{{ivas.find(el => el.id === dt.iva_id)?.percent}}%</td>
               <td class="text-right">${{dt.purchase_price}}</td>
               <td class="text-right">${{dt.sale_price}}</td>
               <td class="text-right">{{dt.discount_percent}}%</td>
@@ -259,7 +259,7 @@
             <q-input outlined dense label="Valor abono"></q-input>
           </q-item-section>
           <q-item-section>
-            <q-btn outline icon="save" color="primary" dense>Guardar</q-btn>
+            <q-btn @click="register" outline icon="save" color="primary" dense>Guardar</q-btn>
           </q-item-section>
         </q-item>
       </q-card-section>
@@ -346,7 +346,7 @@ let purchase = ref({
   payment_shape: null,
   subtotal: computed(() => purchase.value.details.reduce((total, el) => total + el.subtotal, 0)),
   discount: computed(() => purchase.value.details.reduce((total, el) => total + ((el.purchase_price - el.final_purchase_price) * el.units)  , 0)),
-  iva_amount: computed(() => purchase.value.details.reduce((total, el) => total + (el.purchase_price * el.iva_percent/100 * el.units), 0)),
+  iva_amount: computed(() => purchase.value.details.reduce((total, el) => total + (el.purchase_price * ivas.value.find(el2 => el2.id === el.iva_id).percent/100 * el.units), 0)),
   total: computed(() => purchase.value.subtotal - purchase.value.discount + purchase.value.iva_amount),
   total_units: computed(() => purchase.value.details.reduce((total, el) => total + el.units, 0)),
   details: []
@@ -356,7 +356,7 @@ let detailInProcess = reactive({
   item_id: null,
   color_id: null,
   size_id: null,
-  iva_percent: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.iva.percent),
+  iva_id: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.iva.id),
   purchase_price: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.last_purchase_price),
   sale_price: computed(() => items.value.find(i => i.id === detailInProcess.item_id)?.last_sale_price),
   final_purchase_price: 0,
@@ -368,7 +368,7 @@ let detailInProcess = reactive({
 watch(detailInProcess, () => {
   if (detailInProcess.item_id){
     detailInProcess.final_purchase_price = detailInProcess.purchase_price - detailInProcess.purchase_price * detailInProcess.discount_percent/100
-    detailInProcess.purchase_price_plus_iva = detailInProcess.purchase_price + detailInProcess.purchase_price * detailInProcess.iva_percent / 100
+    detailInProcess.purchase_price_plus_iva = detailInProcess.purchase_price + detailInProcess.purchase_price * ivas.value.find(el => el.id === detailInProcess.iva_id).percent / 100
   }
 
   sizesDetails.value = items.value.find(it => it.id === detailInProcess.item_id)?.sizes.map((valor) => ({
@@ -388,7 +388,7 @@ const addDetails = () => {
         item_id: detailInProcess.item_id,
         color_id: detailInProcess.color_id,
         size_id: el.size.id,
-        iva_percent: detailInProcess.iva_percent,
+        iva_id: detailInProcess.iva_id,
         purchase_price: detailInProcess.purchase_price,
         sale_price: detailInProcess.sale_price,
         final_purchase_price: detailInProcess.final_purchase_price,
