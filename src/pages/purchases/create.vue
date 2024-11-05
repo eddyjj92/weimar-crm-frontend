@@ -171,7 +171,7 @@
               </q-item-section>
               <q-item-section>
                 <label for="" class="text-bold" style="font-size: 12px">Cantidad</label>
-                <q-input v-model="detailInProcess.units" outlined dense class="input-box" readonly/>
+                <q-input v-model="purchase.total_units" outlined dense class="input-box" readonly/>
               </q-item-section>
             </q-item>
           </q-item-section>
@@ -343,10 +343,12 @@ const focusNext = (index) => {
 let products = ref(items.value);
 let sizesDetails = ref([]);
 let purchase = ref({
+  payment_shape: null,
   subtotal: computed(() => purchase.value.details.reduce((total, el) => total + el.subtotal, 0)),
   discount: computed(() => purchase.value.details.reduce((total, el) => total + ((el.purchase_price - el.final_purchase_price) * el.units)  , 0)),
   iva_amount: computed(() => purchase.value.details.reduce((total, el) => total + (el.purchase_price * el.iva_percent/100 * el.units), 0)),
   total: computed(() => purchase.value.subtotal - purchase.value.discount + purchase.value.iva_amount),
+  total_units: computed(() => purchase.value.details.reduce((total, el) => total + el.units, 0)),
   details: []
 })
 
@@ -360,7 +362,7 @@ let detailInProcess = reactive({
   final_purchase_price: 0,
   discount_percent: 0,
   purchase_price_plus_iva: 0,
-  units: computed(() => purchase.value.details.reduce((total, el) => total + el.units, 0)),
+  units: 0
 })
 
 watch(detailInProcess, () => {
