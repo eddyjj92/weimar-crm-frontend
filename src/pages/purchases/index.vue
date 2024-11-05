@@ -403,19 +403,17 @@ let loading = ref(false);
 
 const columns = [
   { name: "id", align: "left", label: "ID",  field: "id", sortable: true, },
-  { name: "purchase_date", align: "left", label: "Fecha",  field: "purchase_date", sortable: true, format: (val, row) => date.formatDate(new Date(val), "DD/MM/YYYY"), },
   { name: "payment_shape", align: "left", label: "Forma de Pago ",  field: "payment_shape", sortable: true, format: (val, row) => payment_shapes.value.find(pm => pm.value === val)?.label },
-  { name: "term", align: "left", label: "Plazo",  field: "term", sortable: true },
+  { name: "term", align: "left", label: "Plazo",  field: "term", sortable: true, format: (val, row) => val ? `${val} días` : '0 días' },
   { name: "invoice", align: "left", label: "Factura",  field: "invoice", sortable: true },
   { name: "invoice_date", align: "left", label: "Fecha Factura",  field: "invoice_date", sortable: true, format: (val, row) => date.formatDate(new Date(val), "DD/MM/YYYY"), },
-  { name: "discount", align: "left", label: "Descuento",  field: "discount", sortable: true },
+  { name: "discount", align: "left", label: "Descuento",  field: "discount", sortable: true, format: (val, row) => `$${val}`  },
   { name: "state", align: "left", label: "Estado",  field: "state", sortable: true, format: (val, row) => purchase_states.value.find(pm => pm.value === val)?.label },
-  { name: "balance", align: "left", label: "Saldo",  field: "balance", sortable: true },
   { name: "total_units", align: "left", label: "Total de Unidades",  field: "total_units", sortable: true },
-  { name: "subtotal", align: "left", label: "Subtotal",  field: "subtotal", sortable: true },
-  { name: "total", align: "left", label: "Total",  field: "subtotal", sortable: true },
+  { name: "subtotal", align: "left", label: "Subtotal",  field: "subtotal", sortable: true, format: (val, row) => `$${val}` },
+  { name: "total", align: "left", label: "Total",  field: "total", sortable: true, format: (val, row) => `$${val}` },
   { name: "entity_id", align: "left", label: "Proveedor",  field: "entity_id", sortable: true, format: (val, row) => suppliers.value.find(pm => pm.id === val)?.trade_name },
-  { name: "iva_id", align: "left", label: "IVA",  field: "iva_id", sortable: true, format: (val, row) => ivas.value.find(i => i.id === val)?.percent+'%' },
+  { name: "iva_amount", align: "left", label: "IVA",  field: "iva_amount", sortable: true, format: (val, row) => `$${val}` },
   { name: "store_id", align: "left", label: "Tienda",  field: "store_id", sortable: true, format: (val, row) => stores.value.find(s => s.id === val)?.name },
 ];
 
