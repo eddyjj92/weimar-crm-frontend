@@ -228,16 +228,32 @@
       <q-card-section>
         <q-item>
           <q-item-section>
-            <q-input v-model="purchase.subtotal" outlined dense label="Subtotal"></q-input>
+            <q-input v-model="purchase.subtotal" outlined dense label="Subtotal">
+              <template v-slot:prepend>
+                <span style="margin-top: 12px; margin-right: -5px">$</span>
+              </template>
+            </q-input>
           </q-item-section>
           <q-item-section>
-            <q-input v-model="purchase.discount" outlined dense label="Descuento"></q-input>
+            <q-input v-model="purchase.discount" outlined dense label="Descuento">
+              <template v-slot:prepend>
+                <span style="margin-top: 12px; margin-right: -5px">$</span>
+              </template>
+            </q-input>
           </q-item-section>
           <q-item-section>
-            <q-input v-model="purchase.iva_percent" outlined dense label="IVA"></q-input>
+            <q-input v-model="purchase.iva_amount" outlined dense label="IVA" >
+              <template v-slot:prepend>
+                <span style="margin-top: 12px; margin-right: -5px">$</span>
+              </template>
+            </q-input>
           </q-item-section>
           <q-item-section>
-            <q-input outlined dense label="Total"></q-input>
+            <q-input v-model="purchase.total" outlined dense label="Total">
+              <template v-slot:prepend>
+                <span style="margin-top: 12px; margin-right: -5px">$</span>
+              </template>
+            </q-input>
           </q-item-section>
           <q-item-section>
             <q-input outlined dense label="Valor abono"></q-input>
@@ -329,11 +345,8 @@ let sizesDetails = ref([]);
 let purchase = ref({
   subtotal: computed(() => purchase.value.details.reduce((total, el) => total + el.subtotal, 0)),
   discount: computed(() => purchase.value.details.reduce((total, el) => total + ((el.purchase_price - el.final_purchase_price) * el.units)  , 0)),
-  iva_percent: computed(() => {
-    const validIvas = purchase.value.details.filter(el => el.iva_percent !== 0);
-    const total = validIvas.reduce((sum, el) => sum + el.iva_percent, 0);
-    return validIvas.length > 0 ? total / validIvas.length : 0;
-  }),
+  iva_amount: computed(() => purchase.value.details.reduce((total, el) => total + (el.purchase_price * el.iva_percent/100 * el.units), 0)),
+  total: computed(() => purchase.value.subtotal - purchase.value.discount + purchase.value.iva_amount),
   details: []
 })
 
